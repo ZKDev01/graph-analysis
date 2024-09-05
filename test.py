@@ -6,20 +6,25 @@ from src.random_models import (
   erdos_renyi_model,
 )
 
+import random
+
 
 
 def test_1 ( ) -> None:
-  
-  # los nodos no estan conectados con aristas aun
-  graph = DynamicGraph ( 5 )
+  n = 100
+  root = random.randint ( 0, n-1 )
+  step = 100
+
+  graph = DynamicGraph ( n )
   graph = erdos_renyi_model ( graph, p=0.5 )
 
-  simulator = InformationDiffusion_Simulator ( graph )
+  simulator = InformationDiffusion_Simulator ( graph, root )
 
-  for _ in range ( 10 ):
+  for _ in range ( step ):
     simulator.simulate_step ( )
 
-  print ( f"\n\nNodos con Informacion: { len( simulator.reported_nodes ) }\n\n" )
+  print ( f"\n\nNodos con Informacion: { len( simulator.reported_nodes ) }" )
+  print ( f'\nNumero de nodos finales: { graph.n }\n\n' )
 
 
 

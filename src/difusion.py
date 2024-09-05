@@ -3,9 +3,9 @@ from src.utils.graph import DynamicGraph
 import random
 
 class InformationDiffusion_Simulator:
-  def __init__(self, graph: DynamicGraph) -> None:
+  def __init__(self, graph: DynamicGraph, root: int) -> None:
     self.graph: DynamicGraph = graph
-    self.reported_nodes: set = set ( )
+    self.reported_nodes: set = { root }
 
   def simulate_step ( self ) -> None:
     # Simular la propagacion de informacion
@@ -13,10 +13,10 @@ class InformationDiffusion_Simulator:
     for reported_node in self.reported_nodes:
       neighbors = self.graph.adj_list [ reported_node ]
       for neighbor in neighbors:
-        # Probabilidad de difusion
-        if random.random ( ) < 0.5:
+        # Probabilidad de difusion    
+        if random.random ( ) < 0.2 and not neighbor is self.reported_nodes:
           new_reported.add ( neighbor )
-    
+          
     # Actualizar el conjunto de nodos 
     self.reported_nodes.update ( new_reported )
 
