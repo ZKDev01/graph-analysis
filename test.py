@@ -1,4 +1,4 @@
-from src.difusion import (
+from diffusion import (
   InformationDiffusion_Simulator,
   DynamicGraph
 )
