@@ -1,6 +1,7 @@
-# graph-analysis
-![alt text](image.png)
+# Graph Analysis
 
-# Referencias 
+## Implementado 
 
-🔗 [NetworkX: Layouts](https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout)
+## TODO
+
+
