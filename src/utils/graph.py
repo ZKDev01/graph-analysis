@@ -40,13 +40,11 @@ class DynamicGraph:
     """
     return output
 
-
   def find_node_by_id ( self, id: int ) -> Node:
     for node in self.nodes:
       if node.id == id:
         return node
     return None
-
 
   def add_node ( self, node: Node ):
     self.nodes.append ( node )
@@ -82,45 +80,34 @@ class DynamicGraph:
       self.degrees [ id_1 ] -= 1
       self.degrees [ id_2 ] -= 1
 
+
+
 class MultiplexGraph:
-  def __init__(self, graph: DynamicGraph) -> None:
+
+  def __init__ ( self ) -> None:
+    self.graphs = { }
+  
+  def add_graph ( self, identifier: str, graph: DynamicGraph ) -> None:
+    self.graphs [ identifier ] = graph
+
+
+
+
+
+
+class TemporalGraph: 
+  def __init__(self, graph: DynamicGraph ) -> None:
     self.initial_graph = graph
-    self.layers = [ graph ]
-  
-  
+    self.graphs = [ graph ]
 
+  def get_initial_graph ( self ) -> DynamicGraph:
+    return self.initial_graph
 
+  def get_specific_temporal_graph ( self, t: int ) -> DynamicGraph:
+    return self.graphs [ t ]
 
-def set_nodes_1 ( ) -> list[ Node ]:
-  node_1 = Node ( 
-    id=0,
-    node_type='PERSON',
-    name="person 1",
-    preferences= { 
-      'movies': [ 'movie 1', 'movie 2' ],
-      'songs' : [ 'song 1', 'song 2' ]
-    } 
-  )
-  node_2 = Node ( 
-    id=1,
-    node_type='PERSON',
-    name="person 2",
-    preferences= { 
-      'movies': [ 'movie 2' ],
-      'songs' : [ 'song 1' ]
-    } 
-  )
-
-  return [ node_1, node_2 ]
-
-def test_Node ( ) -> None:
-  pass  
-
-def test_DynamicGraph ( ) -> None:
-  pass
-
-
-def test_MultiplexGraph ( ) -> None:
-  pass
+  def set_new_initial_graph ( self, graph: DynamicGraph ) -> None:
+    self.initial_graph = graph
+    self.graphs = [ graph ]
 
 
