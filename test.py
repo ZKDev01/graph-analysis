@@ -1,3 +1,4 @@
+""" 
 from diffusion import (
   InformationDiffusion_Simulator,
   DynamicGraph
@@ -7,8 +8,6 @@ from src.random_models import (
 )
 
 import random
-
-
 
 def test_1 ( ) -> None:
   n = 100
@@ -23,15 +22,24 @@ def test_1 ( ) -> None:
   for _ in range ( step ):
     simulator.simulate_step ( )
 
-  print ( f"\n\nNodos con Informacion: { len( simulator.reported_nodes ) }" )
-  print ( f'\nNumero de nodos finales: { graph.n }\n\n' )
+  print ( f"Nodos con Informacion: { len( simulator.reported_nodes ) }" )
+  print ( f'Numero de nodos finales: { graph.n }' )
+
+"""
 
 
-
+from src.utils.graph import (
+  test_Node, 
+  test_DynamicGraph,
+  test_MultiplexGraph
+)
 
 
 def main ( ) -> None:
-  test_1 ( )
+  print ( 'TEST-CLASS: Node' )
+  test_Node ( )
+  print ( 'TEST-CLASS: Dynamic Graph' )
+  test_DynamicGraph ( )
 
 if __name__ == "__main__":
   main ( )

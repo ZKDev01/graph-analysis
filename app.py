@@ -33,7 +33,6 @@ def main ( ) -> None:
   
   st.pyplot ( fig=fig )
 
-
 if __name__ == '__main__':
   main ( )
 
