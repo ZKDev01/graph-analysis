@@ -32,6 +32,7 @@ class DynamicGraph:
         return node
     return None
 
+  # OK
   def add_node ( self, node: Node ):
     self.nodes.append ( node )
     self.N += 1
@@ -39,6 +40,7 @@ class DynamicGraph:
     self.adj_list[ node.id ] = [ ]
     self.degrees [ node.id ] = 0
 
+  # OK
   def remove_node ( self, id: int ):
     self.N -= 1
     del self.adj_list[ id ]
@@ -48,8 +50,9 @@ class DynamicGraph:
       # node = self.find_node_by_id ( key )
       if id in value:
         value.remove ( id )
-        self.degrees [ id ] -= 1
+        self.degrees [ key ] -= 1
     
+  # OK
   def add_edge ( self, id_1: int, id_2: int ):
     if not id_1 == id_2:
     
@@ -58,6 +61,7 @@ class DynamicGraph:
       self.degrees [ id_1 ] += 1
       self.degrees [ id_2 ] += 1
 
+  # NOT TEST
   def remove_edge ( self, id_1: int, id_2: int ):
     if id_1 in self.adj_list [ id_2 ]:
 

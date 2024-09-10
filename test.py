@@ -11,7 +11,10 @@ from src.utils.graph import (
 from src.utils.data_faker import (
   generator_name_list,
   generator_tokens_unique_list,
-  random_int
+)
+
+from src.random_models import (
+  erdos_renyi_model
 )
 
 
@@ -36,16 +39,20 @@ MUSIC_GENRE_LIST = [
 
 
 def display_node ( node: Node ) -> None:
+  preferences = 'Preference: \n'
+  for key, value in node.preferences.items ( ) :
+    title = f"- { key.upper( ) } => { value }"
+    preferences += title + '\n\n'
+
   st.markdown ( f"""
-  **Info del Nodo**
-    
-  Name: { node.name }
-
-  Type: { node.node_type }
-
-  Preferences: 
-  { node.preferences }
+  **Info del Nodo:** { node.name }\n
+  Type: { node.node_type }\n
+  
+  {preferences}
   """ )
+  
+
+
 
 def display_dynamic_graph ( graph: DynamicGraph ) -> None:
   st.markdown ( f"""
@@ -55,6 +62,10 @@ def display_dynamic_graph ( graph: DynamicGraph ) -> None:
   st.write ( '## DISPLAY NODES' )
   for n in graph.nodes:
     display_node ( n )
+
+  st.write ( '## DISPLAY EDGES' )
+  st.write ( graph.adj_list )
+
 
 
 def generate_nodes ( n: int ) -> list [ Node ]:
@@ -110,13 +121,25 @@ def node_class ( ) -> None:
 def dynamic_graph_class ( ) -> None:
   st.markdown ( '# Test: Dynamic Graph Class' )
 
-  n = st.number_input ( )
+  st.button ( 'RESET', type='primary' )
 
-  nodes = generate_nodes ( n=n )
-  graph = DynamicGraph ( nodes=nodes )
+  n = st.number_input ( 'Enter a number', min_value=1, max_value=100 )
 
-  display_dynamic_graph ( graph=graph )
+  if st.button ( 'Create Graph' ):
 
+    nodes = generate_nodes ( n=n )
+    graph = DynamicGraph ( nodes=nodes )
+
+    graph = erdos_renyi_model ( graph=graph, p=0.5 )
+
+    display_dynamic_graph ( graph=graph )
+
+    # test
+
+    graph.remove_node ( 1 )
+    st.write ( 'Status Remove: OK' )
+
+    display_dynamic_graph ( graph=graph )
 
 
 
