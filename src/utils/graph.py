@@ -1,19 +1,12 @@
 
+
+
 class Node:
   def __init__(self, id: int, node_type: str, name: str, preferences: dict[ str, list[ str ] ]) -> None:
     self.id = id
     self.node_type = node_type
     self.name = name
     self.preferences = preferences
-  
-  def __str__(self) -> str:
-    output = f""" 
-    ID: { self.id }
-    Name: { self.name }
-    Type: { self.node_type }
-    Preferences: { self.preferences }
-    """
-    return output
   
   def get_node_by_id ( self, id: int ) -> 'Node':
     return self if id == self.id else None
@@ -32,13 +25,6 @@ class DynamicGraph:
       self.adj_list[ n.id ] = [ ]
       self.degrees [ n.id ] = 0
 
-  def __str__(self) -> str:
-    output = f"""
-    N: { self.N }
-    Adj. List: { self.adj_list }
-    Degrees:   { self.degrees }
-    """
-    return output
 
   def find_node_by_id ( self, id: int ) -> Node:
     for node in self.nodes:
@@ -79,6 +65,8 @@ class DynamicGraph:
       self.adj_list [ id_2 ].remove ( id_1 )
       self.degrees [ id_1 ] -= 1
       self.degrees [ id_2 ] -= 1
+
+
 
 
 
