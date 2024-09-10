@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 
-from src.utils.graph import (
+from src.graph import (
   Node,
   DynamicGraph
 )
 
-from src.utils.data_faker import (
+from src.data_faker import (
   generator_name_list,
   generator_tokens_unique_list,
 )

@@ -1,4 +1,4 @@
-from src.utils.graph import ( 
+from src.graph import ( 
   DynamicGraph
 )
 

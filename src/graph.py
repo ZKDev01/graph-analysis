@@ -102,4 +102,8 @@ class TemporalGraph:
     self.initial_graph = graph
     self.graphs = [ graph ]
 
+  def add_new_temporal_graph ( self, graph: DynamicGraph ) -> None:
+    self.graphs.append ( graph )
+
+
 
