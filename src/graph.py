@@ -1,6 +1,8 @@
 
 
 
+
+
 class Node:
   def __init__(self, id: int, node_type: str, name: str, preferences: dict[ str, list[ str ] ]) -> None:
     self.id = id
@@ -10,6 +12,8 @@ class Node:
   
   def get_node_by_id ( self, id: int ) -> 'Node':
     return self if id == self.id else None
+
+
 
 
 
@@ -86,7 +90,6 @@ class MultiplexGraph:
 
 
 
-
 class TemporalGraph: 
   def __init__(self, graph: DynamicGraph ) -> None:
     self.initial_graph = graph
@@ -104,6 +107,7 @@ class TemporalGraph:
 
   def add_new_temporal_graph ( self, graph: DynamicGraph ) -> None:
     self.graphs.append ( graph )
+
 
 
 

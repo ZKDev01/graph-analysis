@@ -1,11 +1,14 @@
+import random
+
 from src.graph import ( 
   DynamicGraph
 )
 
-import random
+def model_ER ( graph: DynamicGraph, p: float ) -> DynamicGraph:
+  """ 
+  Model: Erdos-Renyi 
+  """
 
-def erdos_renyi_model ( graph: DynamicGraph, p: float ) -> DynamicGraph:
-  
   for i in range ( graph.N ):
     for j in range ( i+1, graph.N ):
       if random.random ( ) < p:
@@ -13,7 +16,18 @@ def erdos_renyi_model ( graph: DynamicGraph, p: float ) -> DynamicGraph:
   
   return graph
 
+def model_WS ( graph: DynamicGraph ) -> DynamicGraph:
+  """
+  Model: Watts-Strogatz
+  """
 
+  return graph
 
+def model_BA ( graph: DynamicGraph ) -> DynamicGraph:
+  """ 
+  Model: Barabasi-Albert
+  """
+  
+  return graph
 
 

@@ -3,19 +3,28 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 
-from src.graph import (
-  Node,
-  DynamicGraph
-)
-
 from src.data_faker import (
   generator_name_list,
   generator_tokens_unique_list,
 )
 
 from src.random_models import (
-  erdos_renyi_model
+  model_ER,
+  model_BA,
+  model_WS
 )
+
+
+
+
+
+
+
+from src.graph import (
+  Node,
+  DynamicGraph
+)
+
 
 
 
@@ -36,8 +45,6 @@ MUSIC_GENRE_LIST = [
   'hip-hop'
 ]
 
-
-
 def display_node ( node: Node ) -> None:
   preferences = 'Preference: \n'
   for key, value in node.preferences.items ( ) :
@@ -50,9 +57,6 @@ def display_node ( node: Node ) -> None:
   
   {preferences}
   """ )
-  
-
-
 
 def display_dynamic_graph ( graph: DynamicGraph ) -> None:
   st.markdown ( f"""
@@ -65,8 +69,6 @@ def display_dynamic_graph ( graph: DynamicGraph ) -> None:
 
   st.write ( '## DISPLAY EDGES' )
   st.write ( graph.adj_list )
-
-
 
 def generate_nodes ( n: int ) -> list [ Node ]:
   name_list = generator_name_list ( n=n ) 
@@ -83,9 +85,6 @@ def generate_nodes ( n: int ) -> list [ Node ]:
     )
     nodes.append ( tmp )
   return nodes
-
-
-
 
 def node_class ( ) -> None:
   st.markdown ( '# Test: Node Class' )
@@ -130,7 +129,7 @@ def dynamic_graph_class ( ) -> None:
     nodes = generate_nodes ( n=n )
     graph = DynamicGraph ( nodes=nodes )
 
-    graph = erdos_renyi_model ( graph=graph, p=0.5 )
+    graph = model_ER ( graph=graph, p=0.5 )
 
     display_dynamic_graph ( graph=graph )
 
@@ -146,11 +145,52 @@ def dynamic_graph_class ( ) -> None:
 
 
 
+def test_random_models ( ) -> None:
+  st.write ( '# Test: Random-Models' )
+  st.button ( 'RESET', type='primary' )
+
+def test_data_faker ( ) -> None:
+  st.write ( '# Test: Data-Faker' )
+  st.button ( 'RESET', type='primary' )
+
+  option = st.selectbox (  
+    'Select one',
+    ( 
+      'Generator-Name-List',
+      'Generator-Tokens-Unique-List'
+    )
+  )
+
+  if option == 'Generator-Name-List':
+    st.write ( f'### {option} function' )
+    n1 = st.number_input ( 'Enter a number', min_value=1, max_value=100 )
+    if st.button ( f'Execute function: {option}' ):
+      result1 = generator_name_list ( n=n1 )
+      st.write ( f'Results: { n1 } names' )
+      for i, name in enumerate ( result1 ):
+        st.write ( f'Name { i+1 } => { name }' )
+
+  if option == 'Generator-Tokens-Unique-List':
+    st.write ( f'### {option} function' )
+    n2 = st.number_input ( 'Enter a number', min_value=1, max_value=100 )
+    if st.button ( f'Execute function: {option} using word-list = MOVIE-GENRE-LIST' ):
+      result2 = generator_tokens_unique_list ( word_list=MOVIE_GENRE_LIST, n=n2 )
+      st.write ( f'Results: { n2 } tokens' )
+      for i, token in enumerate ( result2 ):
+        st.write ( f'Token { i+1 } => { token }' )
+
+
+
+
+
+
+
+
 
 def test ( ) -> None:
   page_names_to_funcs = {
-    'Node Class': node_class,
-    'Dynamic Graph Class': dynamic_graph_class
+    'Data-Faker' : test_data_faker,
+    'Random-Models' : test_random_models
   }
   
   deploy = st.sidebar.selectbox ( 'Seleccione:', page_names_to_funcs.keys(), disabled=False )
