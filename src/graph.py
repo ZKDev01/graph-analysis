@@ -27,14 +27,18 @@ class Node:
 class DynamicGraph:
 
   def __init__(self, nodes: list[ Node ]) -> None:
-    self.ids = { node.id for node in nodes }
-    assert len( self.ids ) == len( nodes )
-
     self.nodes = [ node.copy( ) for node in nodes ]
+
+    self.ids = { node.id for node in self.nodes }
+    assert len( self.ids ) == len( self.nodes )
 
     self.adj_list: dict[ int, list[int] ] = { }
     for n in nodes:
       self.adj_list[ n.id ] = [ ]
+
+  def clone_adj_list ( self, adj_list: dict[ int, list[int] ] ):
+    for key, value in adj_list.items ( ):
+      self.adj_list[ key ] = [ i for i in value ]
 
   def N ( self ) -> int:
     return len ( self.nodes )
@@ -122,6 +126,13 @@ class TemporalGraph:
 
   def add_new_temporal_graph ( self, graph: DynamicGraph ) -> None:
     self.graphs.append ( graph )
+
+  def get_last_temporal_graph ( self ) -> DynamicGraph:
+    tmp_last = self.graphs [ len( self.graphs ) - 1 ]
+    output = DynamicGraph ( tmp_last.nodes )
+    output.clone_adj_list ( tmp_last.adj_list ) 
+    return output
+
 
 
 

@@ -279,16 +279,22 @@ def test_simulate_final ( ) -> None:
 
   # create a dynamic 
   f_dynamic = Dynamic ( 'add-node' )
+  p_dynamic = 0.5
 
   # SIMULATE
-  simulation = InformationDiffusion_Simulator ( graph=multiplex_graph, root=root )
-  simulation.simulate ( 
+  simulation = InformationDiffusion_Simulator ( graph=multiplex_graph, root=root, p=p_dynamic )
+  result = simulation.simulate ( 
     layer=select_layer,
     diffusion_functions=diffusion_functions,
     dynamic=f_dynamic,
     step=step
   )
+  
+  temporal: TemporalGraph = result[ 'Temporal Graph' ]
+  informed = result[ 'Informed' ]
 
+  for graph in temporal.graphs:
+    display_dynamic_graph ( graph=graph )
 
 
 # endregion

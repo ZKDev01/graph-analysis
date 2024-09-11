@@ -20,62 +20,58 @@ from src.dynamic import (
 
 class InformationDiffusion_Simulator:
 
-  def __init__(self, graph: MultiplexGraph, root: int) -> None:
+  def __init__(self, graph: MultiplexGraph, root: int, p: float) -> None:
     self.graph = graph
 
     self.root = root
-    self.informed: list = [ ]
-    self.nodes_for_diffusion: set = { root }
+    self.visited: list[ int ] = [ ]
+    self.informed: list[ int ] = [ root ]
 
-  def simulate ( self, layer: str, diffusion_functions: dict[ int, Base_DiffusionFunction ], dynamic: Dynamic, step: int = 10 ) -> TemporalGraph:
+    self.p = p
+
+  def simulate ( self, layer: str, diffusion_functions: dict[ int, Base_DiffusionFunction ], dynamic: Dynamic, step: int = 10 ) -> dict[ str, Any ]:
     
     graph = self.graph.get_specific_graph ( layer )   
     temporal = TemporalGraph ( graph=graph )
 
+    # self.visited => Ya difundio la informacion
+    # self.informed => Va a difundir la informacion
+
     for _ in range ( step ):  
-      # diffusion 
+      # crear instancias de ultimo grafo temporal (ultimo paso en la simulacion)
+      last_temporal = temporal.get_last_temporal_graph ( )
+
+      # crear nuevo conjunto con los nodes for diffusion
+      tmp_visited: list = [ ]
+      tmp_informed: list = [ ]
       
-      for n in self.nodes_for_diffusion:
-        if n in self.informed:
-          continue
+      # diffusion for each informed
+      for n in self.informed:
+        tmp_visited.append ( n ) 
 
-        neighbors = graph.adj_list[ n ]
+        neighbors = last_temporal.adj_list [ n ]
         
+        f = diffusion_functions [ n ] if n in diffusion_functions.keys ( ) else Base_DiffusionFunction ( _ )
+
         for neighbor in neighbors:
-          f = diffusion_functions[ n ]
-          
-          if f.diffusion ( graph=graph, neighbor=neighbor ):
-            
-            self.nodes_for_diffusion.add ( neighbor )
-        
-        self.informed.append ( n )  
+          if f.diffusion ( graph=last_temporal, neighbor=neighbor ):
+            tmp_informed.append ( neighbor )
 
-      # dynamic
-      graph = dynamic.simulate_dynamics ( graph=graph )
+      # evitar repeat diffusion
+      for v in tmp_visited:
+        self.visited.append ( v )
+      for i in tmp_informed:
+        self.informed.append ( i )
+      
+      # dynamic 
+      dynamic.simulate_dynamics ( graph=last_temporal, p=self.p )
 
-      # add like a temporal step in temporal graph
-      temporal.add_new_temporal_graph ( graph=graph )
+      # ultimo paso para la iteracion 
+      temporal.add_new_temporal_graph ( last_temporal )
+    
+    output = {
+      'Temporal Graph' : temporal,
+      'Informed' : self.informed
+    }
 
-    print ( self.informed )
-    print ( self.nodes_for_diffusion )
-    return temporal    
-
-""" 
-
-
-class InformationDiffusion_Simulator:
-
-  def simulate_step ( self ) -> None:
-    # Simular la propagacion de informacion
-    new_reported = set ( )
-    for reported_node in self.reported_nodes:
-      neighbors = self.graph.adj_list [ reported_node ]
-      for neighbor in neighbors:
-        # Probabilidad de difusion    
-        if random.random ( ) < 0.2 and not neighbor is self.reported_nodes:
-          new_reported.add ( neighbor )
-          
-    # Actualizar el conjunto de nodos 
-    self.reported_nodes.update ( new_reported )
-
-"""
+    return output    
