@@ -20,14 +20,15 @@ class Node:
 class DynamicGraph:
 
   def __init__(self, nodes: list[ Node ]) -> None:
+    self.ids = { node.id for node in nodes }
+    assert len( self.ids ) == len( nodes )
+
     self.N = len( nodes )
     self.nodes = nodes
 
     self.adj_list: dict[ int, list[int] ] = { }
-    self.degrees: dict[ int, int ] = { }
     for n in nodes:
       self.adj_list[ n.id ] = [ ]
-      self.degrees [ n.id ] = 0
 
 
   def find_node_by_id ( self, id: int ) -> Node:
@@ -42,7 +43,6 @@ class DynamicGraph:
     self.N += 1
 
     self.adj_list[ node.id ] = [ ]
-    self.degrees [ node.id ] = 0
 
   # OK
   def remove_node ( self, id: int ):
@@ -54,7 +54,6 @@ class DynamicGraph:
       # node = self.find_node_by_id ( key )
       if id in value:
         value.remove ( id )
-        self.degrees [ key ] -= 1
     
   # OK
   def add_edge ( self, id_1: int, id_2: int ):
@@ -62,8 +61,6 @@ class DynamicGraph:
     
       self.adj_list[ id_1 ].append ( id_2 )
       self.adj_list[ id_2 ].append ( id_1 )
-      self.degrees [ id_1 ] += 1
-      self.degrees [ id_2 ] += 1
 
   # NOT TEST
   def remove_edge ( self, id_1: int, id_2: int ):
@@ -71,8 +68,6 @@ class DynamicGraph:
 
       self.adj_list [ id_1 ].remove ( id_2 )
       self.adj_list [ id_2 ].remove ( id_1 )
-      self.degrees [ id_1 ] -= 1
-      self.degrees [ id_2 ] -= 1
 
 
 
