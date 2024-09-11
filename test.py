@@ -34,6 +34,9 @@ from src.diffusion_functions import (
   MostPopular_DiffusionFunction
 )
 
+from src.simulation import (
+  InformationDiffusion_Simulator
+)
 
 
 # region: DISPLAY
@@ -243,21 +246,65 @@ def test_diffusion_functions ( ) -> None:
   for other in other_nodes:
     result = most_popular_f_diffusion.diffusion ( graph=dynamic_graph, neighbor=other )
     print ( f'Most Popular Result for {other.name}: {result}' )
-    
+
+def test_simulate_final ( ) -> None:
+  # generate multiplex
+  n = 10
+  nodes = generator_nodes ( 
+    n=n,
+    node_types=NODE_TYPES,
+    preferences={
+      'music':MUSIC_GENRE_LIST,
+      'movie':MOVIE_GENRE_LIST
+    }
+  )
+  dynamic_graph = DynamicGraph ( nodes=nodes )
+  model_ER ( dynamic_graph, p=0.7 )
+  multiplex_graph = MultiplexGraph ( )
+  multiplex_graph.add_graph ( 'model-ER', dynamic_graph )
+
+  # generate diffusion-functions
+  diffusion_functions = { }
+  for i in range ( n ):
+    diffusion_functions[i] = Probabilistic_DiffusionFunction( dynamic_graph.nodes[i], p=0.5 )
+  
+  # select a root
+  root = 0
+
+  # select a layer
+  select_layer = 'model-ER'
+
+  # select a step-number
+  step = 5
+
+  # create a dynamic 
+  f_dynamic = Dynamic ( 'add-node' )
+
+  # SIMULATE
+  simulation = InformationDiffusion_Simulator ( graph=multiplex_graph, root=root )
+  simulation.simulate ( 
+    layer=select_layer,
+    diffusion_functions=diffusion_functions,
+    dynamic=f_dynamic,
+    step=step
+  )
+
 
 
 # endregion
 
 
 if __name__ == '__main__':
-  test_data_faker ( )
-  test_graph__node ( )
-  test_graph__dynamic_graph ( )
-  test_graph__multiplex_graph ( )
-  test_graph__temporal_graph ( )
-  test_dynamics ( )
-  test_diffusion_functions ( )
+  # test_data_faker ( )
+  # test_graph__node ( )
+  # test_graph__dynamic_graph ( )
+  # test_graph__multiplex_graph ( )
+  # test_graph__temporal_graph ( )
+  # test_dynamics ( )
+  # test_diffusion_functions ( )
 
+  test_simulate_final ( )
+  
   print ( 'OK!' )
 
 

@@ -1,3 +1,6 @@
+import random
+from typing import Any
+
 from src.graph import (
   Node,
   DynamicGraph,
@@ -14,19 +17,15 @@ from src.dynamic import (
 )
 
 
-import random
-from typing import Any
-
-
-
 
 class InformationDiffusion_Simulator:
+
   def __init__(self, graph: MultiplexGraph, root: int) -> None:
-    self.informed = set[int]
     self.graph = graph
 
     self.root = root
-    self.nodes_for_diffusion: set[int] = { root }
+    self.informed: list = [ ]
+    self.nodes_for_diffusion: set = { root }
 
   def simulate ( self, layer: str, diffusion_functions: dict[ int, Base_DiffusionFunction ], dynamic: Dynamic, step: int = 10 ) -> TemporalGraph:
     
@@ -35,9 +34,11 @@ class InformationDiffusion_Simulator:
 
     for _ in range ( step ):  
       # diffusion 
-
+      
       for n in self.nodes_for_diffusion:
-        
+        if n in self.informed:
+          continue
+
         neighbors = graph.adj_list[ n ]
         
         for neighbor in neighbors:
@@ -47,8 +48,7 @@ class InformationDiffusion_Simulator:
             
             self.nodes_for_diffusion.add ( neighbor )
         
-        self.informed.add ( n )
-        self.nodes_for_diffusion.remove ( n )  
+        self.informed.append ( n )  
 
       # dynamic
       graph = dynamic.simulate_dynamics ( graph=graph )
@@ -56,6 +56,8 @@ class InformationDiffusion_Simulator:
       # add like a temporal step in temporal graph
       temporal.add_new_temporal_graph ( graph=graph )
 
+    print ( self.informed )
+    print ( self.nodes_for_diffusion )
     return temporal    
 
 """ 
