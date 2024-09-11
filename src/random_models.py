@@ -7,10 +7,12 @@ from src.graph import (
 def model_ER ( graph: DynamicGraph, p: float ) -> DynamicGraph:
   """ 
   Model: Erdos-Renyi 
+  - p = 1 -> grafo completo
+  - p = 0 -> grafo sin aristas
   """
 
-  for i in range ( graph.N ):
-    for j in range ( i+1, graph.N ):
+  for i in range ( graph.N() ):
+    for j in range ( i+1, graph.N() ):
       if random.random ( ) < p:
         graph.add_edge ( i, j )
   

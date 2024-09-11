@@ -1,7 +1,8 @@
-import networkx as nx
-import matplotlib.pyplot as plt
-
-import streamlit as st
+from src.words import (
+  MOVIE_GENRE_LIST,
+  MUSIC_GENRE_LIST,
+  NODE_TYPES
+)
 
 from src.data_faker import (
   generator_name_list,
@@ -22,183 +23,177 @@ from src.graph import (
   TemporalGraph
 )
 
+from src.dynamic import Dynamic
 
-MOVIE_GENRE_LIST = [
-  'action',
-  'comedy',
-  'drama',
-  'horror',
-  'fantasy'
-]
 
-MUSIC_GENRE_LIST = [
-  'jazz',
-  'rock',
-  'pop',
-  'classical',
-  'hip-hop'
-]
 
+# region: DISPLAY
 
 def display_node ( node: Node ) -> None:
-  preferences = 'Preference: \n'
-  for key, value in node.preferences.items ( ) :
-    title = f"- { key.upper( ) } => { value }"
-    preferences += title + '\n\n'
+  preferences = ""
+  for key, value in node.preferences.items ( ):
+    preferences += f'- { key } : { value } \n  '
 
-  st.markdown ( f"""
-  **Name:** { node.name }\n
-  Type: { node.node_type }\n
-  
-  {preferences}
-  """ )
+  output = f"""
+  Identificador: { node.id }
+  Name:          { node.name }
+  Type:          { node.node_type }
+  Preferences    
+  { preferences }
+  """
+  print ( output )
 
 def display_dynamic_graph ( graph: DynamicGraph ) -> None:
-  st.write ( '## DISPLAY NODES' )
-  for n in graph.nodes:
-    display_node ( n )
-
-  st.write ( '## DISPLAY EDGES' )
-  st.write ( graph.adj_list )
-
-
-
-
-
-
-
-def test_data_faker ( ) -> None:
-  st.write ( '# Test: Data-Faker' )
-  st.button ( 'RESET', type='primary' )
-
-  option = st.selectbox (  
-    'Select one',
-    ( 
-      'Generator-Name-List',
-      'Generator-Tokens-Unique-List',
-      'Generator-Nodes'
-    )
-  )
+  nodes = graph.nodes
+  adj_list = graph.adj_list
   
-  if option == 'Generator-Name-List':
-    st.write ( f'### {option} function' )
-    n1 = st.number_input ( 'Enter a number', min_value=1, max_value=100 )
-    if st.button ( f'Execute function: {option}' ):
-      result1 = generator_name_list ( n=n1 )
-      st.write ( f'Results: { n1 } names' )
-      for i, name in enumerate ( result1 ):
-        st.write ( f'Name { i+1 } => { name }' )
-
-  if option == 'Generator-Tokens-Unique-List':
-    st.write ( f'### {option} function' )
-    n2 = st.number_input ( 'Enter a number', min_value=1, max_value=100 )
-    if st.button ( f'Execute function: {option} using word-list = MOVIE-GENRE-LIST' ):
-      result2 = generator_tokens_unique_list ( word_list=MOVIE_GENRE_LIST, n=n2 )
-      st.write ( f'Results: { n2 } tokens' )
-      for i, token in enumerate ( result2 ):
-        st.write ( f'Token { i+1 } => { token }' )
-
-  if option == 'Generator-Nodes':
-    st.write ( f'### {option} function' )
-    n3 = st.number_input ( 'Enter a number', min_value=1, max_value=100 )
-    if st.button ( f'Execute function: {option}' ):
-      preferences = { 
-        'movie' : MOVIE_GENRE_LIST,
-        'music' : MUSIC_GENRE_LIST
-      }
-      result3 = generator_nodes ( n=n3, node_types=[ 'Teacher', 'Chef', 'Artist', 'Programmer' ], preferences=preferences )
-      st.write ( f'Results: { n3 } nodes' )
-      for i, node in enumerate ( result3 ):
-        st.write ( f'#### Node { i+1 }' )
-        display_node ( node=node )
-
-def test_graph__node ( ) -> None:
-  st.write ( '# Test: Graph - Node Class' )
-  st.button ( 'RESET', type='primary' )
-
-  id = st.number_input ( 'Identifier', min_value=0, max_value=100 )
-  name = st.text_input ( 'Name' )
-
-  movie_options = st.multiselect (
-    'Select movie genres for the node',
-    MOVIE_GENRE_LIST,
-    []
-  )
-  music_options = st.multiselect (  
-    'Select music genres for the node',
-    MUSIC_GENRE_LIST,
-    []
-  )
-
-  if st.button ( 'Create Node' ):
-    node = Node ( 
-      id = id,
-      node_type = 'Programmer',
-      name=name,
-      preferences= { 
-        'movie' : movie_options,
-        'music' : music_options
-      }
-    )
+  print ( 'NODES' )
+  for i, node in enumerate ( nodes ):
+    print ( f'Node { i+1 }' )
     display_node ( node=node )
 
+  print ( 'ADJ LIST' )
+  for key, value in adj_list.items ( ):
+    print ( f'Adj Nodes of: { key }' )
+    print ( f'Nodes: { value }' )
+
+def display_multiplex_graph ( ) -> None:
+  pass
+
+def display_temporal_graph ( ) -> None:
+  pass
+
+# endregion
+
+# region: TEST 
+
+def test_data_faker ( ) -> None:
+  n=5
+  nodes = generator_nodes ( n=n, node_types=NODE_TYPES, preferences={
+    'movie': MOVIE_GENRE_LIST,
+    'music': MUSIC_GENRE_LIST
+  } )
+  for i, node in enumerate ( nodes ):
+    print ( f'Node { i+1 }' )
+    display_node ( node=node )
+
+def test_graph__node ( ) -> None:
+
+  id = 0
+  name = generator_name_list( 1 )[0]
+
+  movie_options = generator_tokens_unique_list ( word_list=MOVIE_GENRE_LIST )
+  music_options = generator_tokens_unique_list ( word_list=MUSIC_GENRE_LIST )
+  node_types = generator_tokens_unique_list ( word_list=NODE_TYPES, n=1 )[0]
+
+  node = Node ( 
+    id=id,
+    node_type=node_types,
+    name=name,
+    preferences={
+      'movie':movie_options,
+      'music':music_options
+    }
+  )
+
+  display_node ( node=node )
+
 def test_graph__dynamic_graph ( ) -> None:
-  st.write ( '# Test: Graph - Dynamic Graph Class' )
-  st.button ( 'RESET', type='primary' )
+  n = 5
+  nodes = generator_nodes ( n=n, node_types=NODE_TYPES, preferences={
+    'movie': MOVIE_GENRE_LIST,
+    'music': MUSIC_GENRE_LIST
+  } )
+  dynamic_graph = DynamicGraph ( nodes=nodes )
 
-  dynamic_graph = None
+  # # MODEL ERDOS-RENYI ( and Add-Edge )
+  # model_ER ( dynamic_graph, p=0.5 )
+  # display_dynamic_graph ( graph=dynamic_graph )
 
-  n = st.number_input ( 'Enter a number', min_value=0, max_value=100 )
-  preferences = { 
-    'movie' : MOVIE_GENRE_LIST,
-    'music' : MUSIC_GENRE_LIST
-  }
-  node_types = [ 'Teacher', 'Chef', 'Artist', 'Programmer' ]
+  # # Add-Node
+  # new_node = generator_nodes ( n=1, node_types=NODE_TYPES, preferences={
+  #   'movie': MOVIE_GENRE_LIST,
+  #   'music': MUSIC_GENRE_LIST 
+  # } )[0]
+  # new_node.id = n 
+  # dynamic_graph.add_node ( node=new_node )
+  # display_dynamic_graph ( graph=dynamic_graph )
   
-  if n > 0:
-    nodes = generator_nodes ( n=n, node_types=node_types, preferences=preferences )
-    dynamic_graph = DynamicGraph ( nodes=nodes )
+  # Add-Edge, Remove
   
-  if dynamic_graph:
-    option = st.selectbox (
-      'Select one', [
-        'Display Dynamic Graph',
-        'Add-Node',
-        'Remove-Node',
-        'Add-Edge',
-        'Remove-Edge'
-      ]
-    )
+  dynamic_graph.add_edge( 0, 1 )
+  dynamic_graph.add_edge( 0, 2 )
+  dynamic_graph.add_edge( 0, 3 )
+
+  dynamic_graph.add_edge( 1, 2 )
+  dynamic_graph.add_edge( 1, 3 )
+
+  # print ( '=== FINISH ADD EDGES ===' )
+  # display_dynamic_graph ( dynamic_graph )
+
+  # dynamic_graph.remove_edge( 1, 2 )
+
+  # print ( '=== FINISH REMOVE EDGE ===' )
+  # display_dynamic_graph ( dynamic_graph )
+
+  dynamic_graph.remove_node ( 1 )
+
+  # print ( '=== FINISH REMOVE A NODE ===' )
+  display_dynamic_graph ( dynamic_graph )
 
 def test_graph__multiplex_graph ( ) -> None:
-  st.write ( '# Test: Graph - Multiplex Graph Class' )
-  st.button ( 'RESET', type='primary' )
+  nodes = generator_nodes ( n=5, node_types=NODE_TYPES, preferences={
+    'music': MUSIC_GENRE_LIST,
+    'movie': MOVIE_GENRE_LIST
+  } )
+  dynamic_graph_1 = DynamicGraph ( nodes=nodes )
+  dynamic_graph_2 = DynamicGraph ( nodes=nodes )
+
+  model_ER ( graph=dynamic_graph_1, p=0.3 )
+  model_ER ( graph=dynamic_graph_2, p=0.7 )
+
+  multiplex = MultiplexGraph ( )
+  multiplex.add_graph ( key='low-p',  graph=dynamic_graph_1 )
+  multiplex.add_graph ( key='high-p', graph=dynamic_graph_2 )
+
+  # display_dynamic_graph ( graph=multiplex.get_specific_graph ( 'low-p' ) )
 
 def test_graph__temporal_graph ( ) -> None:
-  st.write ( '# Test: Graph - Temporal Graph Class' )
-  st.button ( 'RESET', type='primary' )
+  nodes = generator_nodes ( n=4, node_types=NODE_TYPES, preferences={
+    'music': MUSIC_GENRE_LIST,
+    'movie': MOVIE_GENRE_LIST
+  } )
+  dynamic_graph = DynamicGraph ( nodes=nodes )
+  temporal_graph = TemporalGraph ( graph=dynamic_graph )
 
-def test_random_models ( ) -> None:
-  st.write ( '# Test: Random-Models' )
-  st.button ( 'RESET', type='primary' )
+  temporal_0 = temporal_graph.get_specific_temporal_graph( 0 )
+  display_dynamic_graph ( temporal_0 )
+
+def test_dynamics ( ) -> None:
+  nodes = generator_nodes ( n=4, node_types=NODE_TYPES, preferences={
+    'music': MUSIC_GENRE_LIST,
+    'movie': MOVIE_GENRE_LIST
+  } )
+  graph = DynamicGraph ( nodes=nodes )
+  model_ER ( graph=graph, p=0.5 )
+  dynamics = Dynamic ( 'add-node' )
+
+  display_dynamic_graph ( graph=graph )
+  dynamics.simulate_dynamics ( graph=graph, p=0.3 )
+  display_dynamic_graph ( graph=graph )
+
+# endregion
 
 
-
-
-
-def test ( ) -> None:
-  page_names_to_funcs = {
-    'Data Faker' : test_data_faker,
-    'Graph - Node' : test_graph__node,
-    'Graph - Dynamic Graph' : test_graph__dynamic_graph,
-    'Graph - Multiplex Graph' : test_graph__multiplex_graph,
-    'Graph - Temporal Graph' : test_graph__temporal_graph
-  }
-  
-  deploy = st.sidebar.selectbox ( 'Seleccione:', page_names_to_funcs.keys(), disabled=False )
-  page_names_to_funcs [ deploy ]()
 
 if __name__ == '__main__':
-  test ( )
+  # test_data_faker ( )
+  # test_graph__node ( )
+  # test_graph__dynamic_graph ( )
+  # test_graph__multiplex_graph ( )
+  # test_graph__temporal_graph ( )
+  # test_dynamics ( )
+
+  print ( 'OK!' )
 
 

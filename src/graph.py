@@ -13,6 +13,13 @@ class Node:
   def get_node_by_id ( self, id: int ) -> 'Node':
     return self if id == self.id else None
 
+  def copy ( self ) -> 'Node':
+    return Node ( 
+      id=self.id,
+      node_type=self.node_type,
+      name=self.name,
+      preferences=self.preferences 
+    )
 
 
 
@@ -23,13 +30,14 @@ class DynamicGraph:
     self.ids = { node.id for node in nodes }
     assert len( self.ids ) == len( nodes )
 
-    self.N = len( nodes )
-    self.nodes = nodes
+    self.nodes = [ node.copy( ) for node in nodes ]
 
     self.adj_list: dict[ int, list[int] ] = { }
     for n in nodes:
       self.adj_list[ n.id ] = [ ]
 
+  def N ( self ) -> int:
+    return len ( self.nodes )
 
   def find_node_by_id ( self, id: int ) -> Node:
     for node in self.nodes:
@@ -39,16 +47,18 @@ class DynamicGraph:
 
   # OK
   def add_node ( self, node: Node ):
-    self.nodes.append ( node )
-    self.N += 1
+    if node.id in self.ids:
+      node.id = max( self.ids ) + 1
+      self.ids.add( node.id )
+
+    self.nodes.append ( node.copy( ) )
 
     self.adj_list[ node.id ] = [ ]
+    return node.id
 
-  # OK
+  # NOT TEST
   def remove_node ( self, id: int ):
-    self.N -= 1
     del self.adj_list[ id ]
-    del self.degrees [ id ]
     
     for key, value in self.adj_list.items ( ) :
       # node = self.find_node_by_id ( key )
@@ -62,7 +72,7 @@ class DynamicGraph:
       self.adj_list[ id_1 ].append ( id_2 )
       self.adj_list[ id_2 ].append ( id_1 )
 
-  # NOT TEST
+  # OK
   def remove_edge ( self, id_1: int, id_2: int ):
     if id_1 in self.adj_list [ id_2 ]:
 
@@ -78,10 +88,20 @@ class MultiplexGraph:
   def __init__ ( self ) -> None:
     self.graphs = { }
   
-  def add_graph ( self, identifier: str, graph: DynamicGraph ) -> None:
-    self.graphs [ identifier ] = graph
+  def add_graph ( self, key: str, graph: DynamicGraph ) -> None:
+    self.graphs [ key ] = graph
 
+  def remove_graph ( self, key: str ) -> None:
+    try:
+      del self.graphs[ key ]
+    except:
+      raise Exception ( 'Error al eliminar el grafo del multiplex' )
 
+  def get_specific_graph ( self, key: str ) -> DynamicGraph:
+    try:
+      return self.graphs[ key ]
+    except:
+      raise Exception ( 'Error al encontrar el grafo' )
 
 
 

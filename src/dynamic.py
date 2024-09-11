@@ -1,3 +1,4 @@
+import random
 
 from src.graph import ( 
   Node, 
@@ -6,36 +7,50 @@ from src.graph import (
   TemporalGraph
 )
 
+from src.data_faker import (
+  generator_tokens_unique_list,
+  generator_nodes
+)
+
+from src.words import (
+  MOVIE_GENRE_LIST,
+  MUSIC_GENRE_LIST,
+  NODE_TYPES
+)
+
+
 
 class Dynamic: 
   
-  def __init__(self, *args, **kwargs ) -> None:
-    self.add_node = True if 'add_node' in kwargs else False
-    self.add_edge = True if 'add_edge' in kwargs else False
-    self.remove_node = True if 'remove_node' in kwargs else False
-    self.remove_edge = True if 'remove_edge' in kwargs else False
+  def __init__(self, *args ) -> None:
+    """
+    Possible options: 
+    - add-node
+
+    Future:
+    - add-edge
+    - remove-node
+    - remove-edge
+    - modif-metadata
+    """
+    self.keys = args
     
+  def simulate_dynamics ( self, graph: DynamicGraph, p: float ) -> DynamicGraph:
+    
+    if 'add-node' in self.keys and random.random ( ) < p:
+      new_node = generator_nodes (
+        n=1,
+        node_types=NODE_TYPES,
+        preferences={
+          'music':MUSIC_GENRE_LIST,
+          'movie':MOVIE_GENRE_LIST
+        }
+      )[0]
+      id = graph.add_node ( new_node )
 
-  def simulate_dynamics ( self, graph: DynamicGraph ) -> DynamicGraph:
-    if self.add_node:
-      pass
-    if self.add_edge:
-      pass
-
-    if self.remove_edge:
-      pass
-    if self.remove_node:
-      pass
-
-    # self._modif_metadatas ( ... )
+      for node in graph.nodes:
+        if node.id != id:
+          if random.random ( ) < p:
+            graph.add_edge ( id, node.id )
 
     return graph
-  
-  def _add_nodes ( self, graph: DynamicGraph, n: int ):
-    pass
-
-  def _add_edges ( self, graph: DynamicGraph, n: int ):
-    pass
-
-  def _modif_metadatas ( self, graph: DynamicGraph, n: int ): 
-    pass
