@@ -23,7 +23,16 @@ from src.graph import (
   TemporalGraph
 )
 
-from src.dynamic import Dynamic
+from src.dynamic import (
+  Dynamic
+)
+
+from src.diffusion_functions import (
+  Base_DiffusionFunction,
+  Probabilistic_DiffusionFunction,
+  Metadata_DiffusionFunction,
+  MostPopular_DiffusionFunction
+)
 
 
 
@@ -56,12 +65,6 @@ def display_dynamic_graph ( graph: DynamicGraph ) -> None:
   for key, value in adj_list.items ( ):
     print ( f'Adj Nodes of: { key }' )
     print ( f'Nodes: { value }' )
-
-def display_multiplex_graph ( ) -> None:
-  pass
-
-def display_temporal_graph ( ) -> None:
-  pass
 
 # endregion
 
@@ -182,17 +185,78 @@ def test_dynamics ( ) -> None:
   dynamics.simulate_dynamics ( graph=graph, p=0.3 )
   display_dynamic_graph ( graph=graph )
 
+def test_diffusion_functions ( ) -> None:
+  nodes = generator_nodes ( n=5, node_types=NODE_TYPES, preferences={
+    'music':MUSIC_GENRE_LIST,
+    'movie':MOVIE_GENRE_LIST
+  } )
+  dynamic_graph = DynamicGraph ( nodes=nodes )
+  
+  # add-edges
+  dynamic_graph.add_edge ( 0,1 )
+  dynamic_graph.add_edge ( 0,2 )
+  dynamic_graph.add_edge ( 0,3 )
+
+  dynamic_graph.add_edge ( 1,3 )
+  dynamic_graph.add_edge ( 1,4 )
+
+
+  # display_dynamic_graph ( dynamic_graph )
+
+  node = dynamic_graph.nodes[0]
+  
+  base_f_diffusion = Base_DiffusionFunction ( node )
+  print ( 'BASE:', base_f_diffusion.diffusion( graph=dynamic_graph, neighbor=dynamic_graph.nodes[1] ) )
+
+  # high p
+  hp_f_diffusion = Probabilistic_DiffusionFunction ( node, p=0.9 )
+  # low p
+  lp_f_diffusion = Probabilistic_DiffusionFunction ( node, p=0.1 )
+
+  print ( 'HIGH:', hp_f_diffusion.diffusion ( graph=dynamic_graph, neighbor=dynamic_graph.nodes[1] ) )
+  print ( 'LOW: ', lp_f_diffusion.diffusion ( graph=dynamic_graph, neighbor=dynamic_graph.nodes[1] ) )
+
+  other_nodes = dynamic_graph.nodes[1:]
+
+  metadata_music_f_diffusion = Metadata_DiffusionFunction ( 
+    node=node, 
+    metadata='music',
+  )
+  metadata_movie_f_diffusion = Metadata_DiffusionFunction (
+    node=node,
+    metadata='movie'
+  )
+  
+  display_node ( node )
+
+  for other_node in other_nodes:
+    print ( '======================================' )
+    display_node ( other_node )
+    result_music = metadata_music_f_diffusion.diffusion ( graph=dynamic_graph, neighbor=other_node )
+    result_movie = metadata_movie_f_diffusion.diffusion ( graph=dynamic_graph, neighbor=other_node )
+    print ( 'Music Diffusion:', result_music )
+    print ( 'Movie Diffusion:', result_movie )
+
+  most_popular_f_diffusion = MostPopular_DiffusionFunction ( node=node, value=2 )
+
+  display_dynamic_graph ( graph=dynamic_graph )
+  for other in other_nodes:
+    result = most_popular_f_diffusion.diffusion ( graph=dynamic_graph, neighbor=other )
+    print ( f'Most Popular Result for {other.name}: {result}' )
+    
+
+
 # endregion
 
 
-
 if __name__ == '__main__':
-  # test_data_faker ( )
-  # test_graph__node ( )
-  # test_graph__dynamic_graph ( )
-  # test_graph__multiplex_graph ( )
-  # test_graph__temporal_graph ( )
-  # test_dynamics ( )
+  test_data_faker ( )
+  test_graph__node ( )
+  test_graph__dynamic_graph ( )
+  test_graph__multiplex_graph ( )
+  test_graph__temporal_graph ( )
+  test_dynamics ( )
+  test_diffusion_functions ( )
 
   print ( 'OK!' )
 
