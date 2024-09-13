@@ -80,7 +80,7 @@ def display_dynamic_graph ( dynamic_graph: DynamicGraph ) -> None:
 
 
 def deploy ( ) -> None:
-  st.title ( 'Proyect: Graph Analysis' )
+  st.title ( 'Proyecto de Análisis de Redes Complejas' )
 
   n_nodes = st.sidebar.number_input ( 'Select a number of nodes', min_value=0, max_value=100 )
   p_model_ER = st.sidebar.number_input ( 'Select a value for model-ER', min_value=0.0, max_value=1.0 )

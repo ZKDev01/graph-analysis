@@ -1,0 +1,33 @@
+
+
+{
+  "genres" : [
+    {
+      "id" :          1,
+      "name" :        "Rock",
+      "description" : "A genre characterized by strong rhythms, powerful vocals, and often electric instruments."
+    },
+    {
+      "id" :          2,
+      "name" :        "Pop",
+      "description" : "A genre known for catchy melodies, simple harmonies, and a focus on the singer's voice."
+    },
+    {
+      "id" :          3,
+      "name" :        "Hip-Hop",
+      "description" : "A genre that emphasizes rhythmic speech and lyrical flow, often accompanied by electronic beats."
+    },
+    {
+      "id" :          4,
+      "name" :        "Electronic",
+      "description" : "A genre that uses electronic musical instruments and digital audio workstations to produce sound."
+    },
+    {
+      "id":           5,
+      "name":         "Country",
+      "description":  "A genre originating from American folk music, typically featuring acoustic instruments and storytelling lyrics."
+    }
+  ]
+
+}
+
