@@ -1,26 +1,87 @@
+from copy import deepcopy
+from typing import Any, List, Dict
+
+
+class Metadata:
+  def __init__( self, name: str, value: List[ Any ] ) -> None:
+    self.name : str = name
+    self.value: list [ str ] = value
+
+  @staticmethod
+  def copy ( obj: 'Metadata' ) -> 'Metadata':
+    new_obj = deepcopy ( obj )
+    return new_obj
 
 
 
-
-
-class Node:
-  def __init__(self, id: int, node_type: str, name: str, preferences: dict[ str, list[ str ] ]) -> None:
-    self.id = id
-    self.node_type = node_type
+class Vertex:
+  def __init__( self, name: str, v_type: str, metadatas: List[ Metadata ] ) -> None:
     self.name = name
-    self.preferences = preferences
+    self.type = v_type
+    self.metadatas = metadatas
   
-  def get_node_by_id ( self, id: int ) -> 'Node':
-    return self if id == self.id else None
+  def add_metadata ( self, new_metadata: Metadata ) -> bool:
+    for metadata in self.metadatas:
+      if new_metadata.name == metadata.name:
+        return False
+    self.metadatas.append ( new_metadata )
+    return True
 
-  def copy ( self ) -> 'Node':
-    return Node ( 
-      id=self.id,
-      node_type=self.node_type,
-      name=self.name,
-      preferences=self.preferences 
-    )
+  def update_metadata ( self, new_metadata: Metadata ) -> bool:
+    for metadata in self.metadatas:
+      if new_metadata.name == metadata.name:
+        metadata = Metadata.copy( new_metadata )
+        return True
+    return False
 
+  def delete_metadata ( self, metadata_name: str ) -> bool:
+    for i, metadata in enumerate ( self.metadatas ):
+      if metadata.name == metadata_name:
+        del self.metadatas[ i ]
+        return True
+    return False
+
+  @staticmethod
+  def copy ( obj: 'Vertex' ) -> 'Vertex':
+    new_obj = deepcopy ( obj )
+    return new_obj
+
+  @staticmethod
+  def convert_to_dict ( obj: 'Vertex' ) -> Dict:
+    obj_like_dict = { }
+    obj_like_dict[ 'name' ] = obj.name
+    obj_like_dict[ 'type' ] = obj.type
+
+    metadatas = { }
+    for m in obj.metadatas:
+      metadatas[ m.name ] = m.value
+    obj_like_dict[ 'metadatas' ] = metadatas
+    
+    return obj_like_dict
+
+  @staticmethod
+  def convert_from_dict ( obj_like_dict: Dict ) -> 'Vertex':
+    v_name = obj_like_dict[ 'name' ]
+    v_type = obj_like_dict[ 'type' ]
+    
+    metadatas = [ ]
+    for key, value in obj_like_dict[ 'metadatas' ].items( ):
+      metadatas.append ( Metadata ( key, value ) )
+    
+    obj = Vertex ( name=v_name, v_type=v_type, metadatas=metadatas )
+    return obj
+
+
+
+class DynamicGraph:
+  def __init__ ( self, vertex: List [ Vertex ] ) -> None:
+    self.vertex = Dict()
+    for i, v in enumerate ( vertex ):
+      self.vertex [ i ] = v
+    
+  
+
+""" 
 
 
 
@@ -136,4 +197,5 @@ class TemporalGraph:
 
 
 
+"""
 

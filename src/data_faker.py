@@ -1,46 +1,52 @@
 from faker import Faker
+from typing import Dict, List, Set
 
-from src.graph import (
-  Node
+from src.graph import (  
+  Metadata,
+  Vertex
 )
 
+# OK
+def generate_name ( N: int = 1, locale: str = 'en_US' ) -> List[ str ]:
+  # possible locale: [ 'en_US', 'it_IT', 'ja_JP', 'es_ES', ... ]
+  fake = Faker ( locale=locale )
+  names: List[ str ] = [ fake.name() for _ in range ( N ) ]
+  return names
 
-
-def generator_name_list ( n: int, localization: str = 'en_US' ) -> list[ str ]:
-  # possible locales: [ en_US, it_IT, ja_JP, es_ES, ... ]
-  fake = Faker ( locale=localization )
-  l = [ ]
-  for _ in range ( 0, n ):
-    l.append ( fake.name( ) )
-  return l
-
-def generator_tokens_unique_list ( word_list: set[ str ], n: int = -1 ) -> list [ str ]:
+# OK
+def generate_metadata ( tokens: Set [ str ], metadata_name: str, k: int = -1 ) -> Metadata:
   fake = Faker ( )
-
-  if n == -1:
-    n = fake.random_int ( min=0, max=len(word_list)-1 )
-
-  tokens = fake.random_elements ( elements=word_list, length=n, unique=True )
-  return tokens
-
-def generator_nodes ( n: int, node_types: list[ str ], preferences: dict[ str, list ] ) -> list [ Node ]:  
-  nodes = [ ]
-  names = generator_name_list ( n=n )
-
-  for i, name in enumerate ( names ):
-
-    tmp_preferences = { }
-    for key, value in preferences.items ( ):
-      tmp_preferences [ key ] = generator_tokens_unique_list ( value )
-
-    tmp_node_type = generator_tokens_unique_list ( node_types, n = 1 )[0]
-
-    node = Node (  
-      id=i,
-      name=name,
-      node_type=tmp_node_type,
-      preferences=tmp_preferences
-    )
-    nodes.append ( node )
   
-  return nodes
+  if k == -1:
+    k = fake.random_int ( min=0, max=len( tokens ) )
+
+  if not ( 0 <= k and k <= len ( tokens ) ):
+    raise Exception ( 'k > len(tokens) or k = len(tokens) or k is negatived' )
+  
+  metadata_value = fake.random_elements ( elements=[ token for token in tokens ], length=k, unique=True )
+  metadata = Metadata ( name=metadata_name, value=metadata_value )
+  return metadata
+
+# OK
+def generate_vertex ( dict_tokens: Dict[ str, Set[ str ] ], name: str, v_type: str ) -> Vertex:
+  metadatas: List[ Metadata ] = [ ]
+  for key, value in dict_tokens.items ( ):
+    metadatas.append ( generate_metadata ( tokens=value, metadata_name=key, k=-1 ) )
+  
+  vertex = Vertex ( name=name, v_type=v_type, metadatas=metadatas )
+
+  return vertex
+
+
+
+# OK
+def generate_N_vertex_with_unique_name ( N: int, dict_tokens: Dict[ str, Set[ str ] ], v_type: str ) -> List[ Vertex ]:
+  vertex: List[ Vertex ] = [ ]
+  names = generate_name ( N=N )
+
+  for i in range ( N ):
+    vertex.append ( generate_vertex ( dict_tokens=dict_tokens, name=names[i], v_type=v_type ) )
+  
+  return vertex
+
+

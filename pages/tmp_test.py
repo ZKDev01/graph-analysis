@@ -1,3 +1,4 @@
+""" 
 from src.words import (
   MOVIE_GENRE_LIST,
   MUSIC_GENRE_LIST,
@@ -46,13 +47,13 @@ def display_node ( node: Node ) -> None:
   for key, value in node.preferences.items ( ):
     preferences += f'- { key } : { value } \n  '
 
-  output = f"""
+  output = f'''
   Identificador: { node.id }
   Name:          { node.name }
   Type:          { node.node_type }
   Preferences    
   { preferences }
-  """
+  '''
   print ( output )
 
 def display_dynamic_graph ( graph: DynamicGraph ) -> None:
@@ -314,3 +315,4 @@ if __name__ == '__main__':
   print ( 'OK!' )
 
 
+"""
