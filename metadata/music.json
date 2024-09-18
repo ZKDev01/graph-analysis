@@ -1,33 +1,80 @@
-
-
 {
-  "genres" : [
+  "like-music" : [
     {
       "id" :          1,
-      "name" :        "Rock",
-      "description" : "A genre characterized by strong rhythms, powerful vocals, and often electric instruments."
+      "name" :        "Rock"
     },
     {
       "id" :          2,
-      "name" :        "Pop",
-      "description" : "A genre known for catchy melodies, simple harmonies, and a focus on the singer's voice."
+      "name" :        "Pop"
     },
     {
       "id" :          3,
-      "name" :        "Hip-Hop",
-      "description" : "A genre that emphasizes rhythmic speech and lyrical flow, often accompanied by electronic beats."
+      "name" :        "Hip-Hop"
     },
     {
       "id" :          4,
-      "name" :        "Electronic",
-      "description" : "A genre that uses electronic musical instruments and digital audio workstations to produce sound."
+      "name" :        "Electronic"
     },
     {
-      "id":           5,
-      "name":         "Country",
-      "description":  "A genre originating from American folk music, typically featuring acoustic instruments and storytelling lyrics."
+      "id" :          5,
+      "name" :        "Jazz"
+    },
+    {
+      "id" :          6,
+      "name" :        "Classic"
+    },
+    {
+      "id" :          7,
+      "name" :        "Country"
+    },
+    {
+      "id" :          8,
+      "name" :        "Folk"
+    },
+    {
+      "id" :          9,
+      "name" :        "R&B"
+    },
+    {
+      "id" :          10,
+      "name" :        "Metal"
+    },
+    {
+      "id" :          11,
+      "name" :        "Reggae"
+    },
+    {
+      "id" :          12,
+      "name" :        "Soul"
+    },
+    {
+      "id" :          13,
+      "name" :        "Blues"
+    },
+    {
+      "id" :          14,
+      "name" :        "Gospel"
+    },
+    {
+      "id" :          15,
+      "name" :        "Latin"
+    },
+    {
+      "id" :          16,
+      "name" :        "Indie"
+    },
+    {
+      "id" :          17,
+      "name" :        "Punk"
+    },
+    {
+      "id" :          18,
+      "name" :        "House"
+    },
+    {
+      "id" :          19,
+      "name" :        "Techno"
     }
   ]
-
 }
-

@@ -11,6 +11,16 @@ from src.data_faker import (
   generate_N_vertex_with_unique_name
 )
 
+from src.load_metadata import (
+  Music,
+  load_tokens_from_json
+)
+
+from utils import (
+  load_dict_tokens_from_metadatas
+)
+
+
 
 def display_vertex_for_test ( vertex: List[ Vertex ] ):
   for i, v in enumerate ( vertex ):
@@ -20,9 +30,7 @@ def display_vertex_for_test ( vertex: List[ Vertex ] ):
       print ( f'Metadata -> { m.name } : { m.value }' )
     print ( '' )
 
-
-def main ( ) -> None:
-  # st.image ( image='resources/design_01.png', caption='presentación' )
+def testing_1 ( ) -> None:
   
   dict_tokens = {
     'Like-Music': { 'pop', 'rock', 'hip-hop', 'rap' },
@@ -43,8 +51,39 @@ def main ( ) -> None:
   obj = Vertex.convert_from_dict ( obj_like_dict=obj_like_dict )
   display_vertex_for_test ( [obj] )
 
+
+def main ( ) -> None:
+  # st.image ( image='resources/design_01.png', caption='presentación' )
+  MUSIC_PATH = 'metadata/music.json'
+  MOVIES_PATH = 'metadata/movies.json'
+
+  result: List[ Music ] = load_tokens_from_json ( MUSIC_PATH )
+  print ( result )
+  for r in result:
+    print ( '===========' )
+    print ( r.id )
+    print ( r.name )
+
+  # load_tokens_from_json ( MOVIES_PATH )
+
+
+
+
+
+
+
+
+
+
+def main ( verbose: bool = True ) -> None:
+  dict_tokens = load_dict_tokens_from_metadatas ( )
+  
+  if verbose:
+    print ( 'TOKENS' )
+    print ( dict_tokens )
+
 if __name__ == '__main__':
-  main ( )
+  main ( verbose=True )
 
 
 

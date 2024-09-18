@@ -1,0 +1,24 @@
+{
+  "like-movie" : [
+    {
+      "id" :          1,
+      "name" :        "Action"
+    },
+    {
+      "id" :          2,
+      "name" :        "Fantasy"
+    },
+    {
+      "id" :          3,
+      "name" :        "Horror"
+    },
+    {
+      "id" :          4,
+      "name" :        "Comedy"
+    },
+    {
+      "id" :          5,
+      "name" :        "Animation"
+    }
+  ]
+}

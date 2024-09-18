@@ -5,7 +5,7 @@ from typing import Any, List, Dict
 class Metadata:
   def __init__( self, name: str, value: List[ Any ] ) -> None:
     self.name : str = name
-    self.value: list [ str ] = value
+    self.value: list [ str ] = deepcopy( value )  
 
   @staticmethod
   def copy ( obj: 'Metadata' ) -> 'Metadata':
@@ -18,21 +18,14 @@ class Vertex:
   def __init__( self, name: str, v_type: str, metadatas: List[ Metadata ] ) -> None:
     self.name = name
     self.type = v_type
-    self.metadatas = metadatas
+    self.metadatas = [ Metadata.copy ( m ) for m in metadatas ]
   
   def add_metadata ( self, new_metadata: Metadata ) -> bool:
     for metadata in self.metadatas:
       if new_metadata.name == metadata.name:
         return False
-    self.metadatas.append ( new_metadata )
+    self.metadatas.append ( Metadata.copy( new_metadata ) )
     return True
-
-  def update_metadata ( self, new_metadata: Metadata ) -> bool:
-    for metadata in self.metadatas:
-      if new_metadata.name == metadata.name:
-        metadata = Metadata.copy( new_metadata )
-        return True
-    return False
 
   def delete_metadata ( self, metadata_name: str ) -> bool:
     for i, metadata in enumerate ( self.metadatas ):
