@@ -1,7 +1,7 @@
 import json
 from typing import List, Dict, Any, Set
 
-
+TOKENS_PATH = 'metadata/tokens.json'
 
 # region: LOAD CONFIGURATION
 
@@ -10,11 +10,9 @@ def load_keys_from_tokens ( ) -> List[ str ]:
   return [ 'like-movies', 'like-music' ]
 
 def load_tokens ( keys: List[ str ] ) -> Dict[ str, List[ str ] ]:
-  path = 'metadata/tokens.json'
-
   dict_tokens: Dict[ str, List[ str ] ] = { }
   
-  with open ( path, 'r' ) as file:
+  with open ( TOKENS_PATH, 'r' ) as file:
     json_data = json.load ( file )
     for key in keys:
       dict_tokens[key] = json_data[key]

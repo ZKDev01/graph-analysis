@@ -41,6 +41,7 @@ class Vertex:
 
   @staticmethod
   def convert_to_dict ( obj: 'Vertex' ) -> Dict:
+    # devuelve un dictionary: 'name', 'type', 'metadatas' (no importa cuantos metadatos tenga, los crea en el dictionary igual)
     obj_like_dict = { }
     obj_like_dict[ 'name' ] = obj.name
     obj_like_dict[ 'type' ] = obj.type
@@ -54,6 +55,7 @@ class Vertex:
 
   @staticmethod
   def convert_from_dict ( obj_like_dict: Dict ) -> 'Vertex':
+    # debe contener el diccionario: 'name', 'type', 'metadatas' (no importa cuantos metadatos tenga, los crea igual)
     v_name = obj_like_dict[ 'name' ]
     v_type = obj_like_dict[ 'type' ]
     

@@ -1,3 +1,4 @@
+""" 
 import random
 
 from src.graph import ( 
@@ -23,7 +24,7 @@ from src.words import (
 class Dynamic: 
   
   def __init__(self, *args ) -> None:
-    """
+    
     Possible options: 
     - add-node
 
@@ -32,7 +33,7 @@ class Dynamic:
     - remove-node
     - remove-edge
     - modif-metadata
-    """
+    
     self.keys = args
     
   def simulate_dynamics ( self, graph: DynamicGraph, p: float ) -> DynamicGraph:
@@ -54,3 +55,5 @@ class Dynamic:
             graph.add_edge ( id, node.id )
 
     return graph
+
+"""

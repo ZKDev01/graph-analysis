@@ -1,19 +1,19 @@
 import random
 
 from src.graph import (
-  Node,
-  DynamicGraph,
-  MultiplexGraph,
-  TemporalGraph,
+  Vertex,
+  DynamicGraph
 )
 
 
+""" 
+
 
 class Base_DiffusionFunction:
-  def __init__(self, node: Node) -> None:
-    self.node = node
+  def __init__(self, v: Vertex) -> None:
+    self.v = v
 
-  def diffusion ( self, graph: DynamicGraph, neighbor: Node ) -> bool:
+  def diffusion ( self, graph: DynamicGraph, neighbor: Vertex ) -> bool:
     return True
 
   def __str__(self) -> str:
@@ -62,3 +62,6 @@ class MostPopular_DiffusionFunction ( Base_DiffusionFunction ):
     return output
 
 
+
+
+"""
