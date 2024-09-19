@@ -1,9 +1,22 @@
 import random
 
+from typing import Dict, Any, Set, List
+
 from src.graph import (
   Vertex,
   DynamicGraph
 )
+
+
+class Base_DiffusionFunction:
+  def __init__( self, v: Vertex ) -> None:
+    self.v = v 
+
+  def diffusion ( self, graph: DynamicGraph, neighbor: Vertex ) -> bool:
+    return True
+
+  def get_name ( self ) -> str:
+    return 'always diffusion'
 
 
 """ 
@@ -65,3 +78,4 @@ class MostPopular_DiffusionFunction ( Base_DiffusionFunction ):
 
 
 """
+

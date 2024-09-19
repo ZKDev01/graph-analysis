@@ -14,9 +14,9 @@ def model_ER ( graph: DynamicGraph, p: float ) -> DynamicGraph:
   $M$ aristas que se asignan con probabilidad $p$ de manera independiente. 
   Cualquier topología generada en la red es igual de probable.
   """
-
-  for i in range ( graph.N() ):
-    for j in range ( i+1, graph.N() ):
+  N = graph.get_number_of_vertexs ( )
+  for i in range ( N ):
+    for j in range ( i+1, N ):
       if random.random ( ) < p:
         graph.add_edge ( i, j )
   

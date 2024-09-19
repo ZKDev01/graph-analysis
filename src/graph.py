@@ -76,7 +76,7 @@ class Vertex:
 
 class DynamicGraph:
   def __init__ ( self, vertex: List [ Vertex ] ) -> None:
-    self.vertex = Dict()
+    self.vertex = { }
     for i, v in enumerate ( vertex ):
       self.vertex [ i ] = Vertex.copy( v )
     
@@ -84,10 +84,27 @@ class DynamicGraph:
     for i, _ in self.vertex.items ( ):
       self.adj_list [ i ] = [ ]
 
+    # degree
+
   @staticmethod
   def copy ( obj: 'DynamicGraph' ) -> 'DynamicGraph':
     new_obj = deepcopy ( obj )
     return new_obj
+
+  def add_edge ( self, id_1: int, id_2: int ) -> None:
+    if not id_1 == id_2:
+      self.adj_list[ id_1 ].append ( id_2 )
+      self.adj_list[ id_2 ].append ( id_1 )
+
+  def get_number_of_vertexs ( self ) -> int:
+    return len ( self.vertex.keys ( ) )
+  
+  def __repr__(self) -> str:
+    output = f"""
+    { self.vertex }
+    { self.adj_list }
+    """
+    return output
 
 """ 
 
