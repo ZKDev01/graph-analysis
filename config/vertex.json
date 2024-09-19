@@ -1,0 +1,32 @@
+{
+  "vertex": [
+    {
+      "name": "Person1",
+      "type": "Person",
+      "metadatas": {
+        "like-movie": [
+          "action",
+          "comedy"
+        ],
+        "like-music": [
+          "hip-hop",
+          "pop"
+        ]
+      }
+    },
+    {
+      "name": "Person2",
+      "type": "Person",
+      "metadatas": {
+        "like-movie": [
+          "horror",
+          "comedy"
+        ],
+        "like-music": [
+          "rock",
+          "pop"
+        ]
+      }
+    }
+  ]
+}

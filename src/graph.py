@@ -64,15 +64,28 @@ class Vertex:
     obj = Vertex ( name=v_name, v_type=v_type, metadatas=metadatas )
     return obj
 
+  def __repr__(self) -> str:
+    metadata = ''
+    for m in self.metadatas:
+      metadata += f'Metadata -> {m.name} : { m.value }\n'
+    return f"{self.name} ({self.type})\n"+metadata
+
 
 
 class DynamicGraph:
   def __init__ ( self, vertex: List [ Vertex ] ) -> None:
     self.vertex = Dict()
     for i, v in enumerate ( vertex ):
-      self.vertex [ i ] = v
+      self.vertex [ i ] = Vertex.copy( v )
     
-  
+    self.adj_list: Dict [ int, List[ int ] ] = { }
+    for i, _ in self.vertex.items ( ):
+      self.adj_list [ i ] = [ ]
+
+  @staticmethod
+  def copy ( obj: 'DynamicGraph' ) -> 'DynamicGraph':
+    new_obj = deepcopy ( obj )
+    return new_obj
 
 """ 
 

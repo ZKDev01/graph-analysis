@@ -1,0 +1,7 @@
+{
+  "temporal-graph" : {
+    "0" : "estado del grafo en tiempo 0",
+    "1" : "estado del grafo en tiempo 1",
+    "2" : "estado del grafo en tiempo 2"
+  }
+}

@@ -1,25 +1,23 @@
-from typing import List, Dict, Any
+import json
+from typing import List, Dict, Any, Set
 
-from src.load_metadata import (
-  Movie,
-  Music,
-  load_tokens_from_json
-)
+
 
 # region: LOAD CONFIGURATION
 
-def load_dict_tokens_from_metadatas ( ) -> Dict:
-  dict_key_paths = { 
-    'like-movie': [ 'metadata/movies.json', Movie.f_parse ],
-    'like-music': [ 'metadata/music.json', Music.f_parse ]
-  }
-  dict_tokens = { }
+# falta
+def load_keys_from_tokens ( ) -> List[ str ]:
+  return [ 'like-movies', 'like-music' ]
 
-  for key, values in dict_key_paths.items ( ):
-    dict_tokens [ key ] = load_tokens_from_json ( 
-      path=values[0], 
-      f_parse=values[1],
-      key_parse=key )
+def load_tokens ( keys: List[ str ] ) -> Dict[ str, List[ str ] ]:
+  path = 'metadata/tokens.json'
+
+  dict_tokens: Dict[ str, List[ str ] ] = { }
+  
+  with open ( path, 'r' ) as file:
+    json_data = json.load ( file )
+    for key in keys:
+      dict_tokens[key] = json_data[key]
 
   return dict_tokens
 

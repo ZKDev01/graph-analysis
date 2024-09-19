@@ -1,5 +1,5 @@
-# import streamlit as st
-# import altair as alt
+import streamlit as st
+import altair as alt
 
 from typing import List, Dict, Any
 
@@ -11,13 +11,8 @@ from src.data_faker import (
   generate_N_vertex_with_unique_name
 )
 
-from src.load_metadata import (
-  Music,
-  load_tokens_from_json
-)
-
 from utils import (
-  load_dict_tokens_from_metadatas
+  load_tokens
 )
 
 
@@ -52,19 +47,6 @@ def testing_1 ( ) -> None:
   display_vertex_for_test ( [obj] )
 
 
-def main ( ) -> None:
-  # st.image ( image='resources/design_01.png', caption='presentación' )
-  MUSIC_PATH = 'metadata/music.json'
-  MOVIES_PATH = 'metadata/movies.json'
-
-  result: List[ Music ] = load_tokens_from_json ( MUSIC_PATH )
-  print ( result )
-  for r in result:
-    print ( '===========' )
-    print ( r.id )
-    print ( r.name )
-
-  # load_tokens_from_json ( MOVIES_PATH )
 
 
 
@@ -76,14 +58,36 @@ def main ( ) -> None:
 
 
 def main ( verbose: bool = True ) -> None:
-  dict_tokens = load_dict_tokens_from_metadatas ( )
+  dict_tokens = load_tokens ( keys=[ 'like-movies', 'like-music' ] )
   
+  st.write ( '# TOKENS' )
+  for key, value in dict_tokens.items ( ):
+    st.write ( f"KEY: {key}" )
+    st.write ( value )
+  
+  st.write ( '# GENERATE VERTEX' )
+  N = 0
+
+  with st.form ( 'Generate Vertex' ):
+    N = st.number_input ( 'N', min_value=0, max_value=100 )
+    submit_button = st.form_submit_button ( 'Create' )
+
+  if N > 0 and submit_button:
+    st.write ( N )
+    # Generate 
+
+    vertex = generate_N_vertex_with_unique_name ( N=N, dict_tokens=dict_tokens, v_type='Person' )
+    st.write ( vertex )
+
+    # Save Vertex
+    
+
   if verbose:
     print ( 'TOKENS' )
     print ( dict_tokens )
 
 if __name__ == '__main__':
-  main ( verbose=True )
+  main ( verbose=False )
 
 
 
@@ -91,7 +95,7 @@ if __name__ == '__main__':
 
 
 # TEST
-## 1. Data Faker
+## 1. Data Faker (GENERADOR DE NODOS)
 ## 2. Graph - Node
 ## 3. Graph - Dynamic Graph
 ## 4. Graph - Multiplex Graph

@@ -1,0 +1,6 @@
+{
+  "add-node" : 0.4,
+  "add-edge" : 0.3,
+  "del-node" : 0.6,
+  "del-edge" : 0.1
+}
