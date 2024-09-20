@@ -6,12 +6,16 @@ from src.graph import (
   Vertex
 )
 
+
+
 # OK
 def generate_name ( N: int = 1, locale: str = 'en_US' ) -> List[ str ]:
   # possible locale: [ 'en_US', 'it_IT', 'ja_JP', 'es_ES', ... ]
   fake = Faker ( locale=locale )
   names: List[ str ] = [ fake.name() for _ in range ( N ) ]
   return names
+
+
 
 # OK
 def generate_metadata ( tokens: Set [ str ], metadata_name: str, k: int = -1 ) -> Metadata:
@@ -26,6 +30,8 @@ def generate_metadata ( tokens: Set [ str ], metadata_name: str, k: int = -1 ) -
   metadata_value = fake.random_elements ( elements=[ token for token in tokens ], length=k, unique=True )
   metadata = Metadata ( name=metadata_name, value=metadata_value )
   return metadata
+
+
 
 # OK
 def generate_vertex ( dict_tokens: Dict[ str, Set[ str ] ], name: str, v_type: str ) -> Vertex:

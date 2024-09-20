@@ -12,9 +12,6 @@ from src.diffusion_functions import (
   Base_DiffusionFunction
 )
 
-from src.dynamic import (
-  Dynamic
-)
 
 
 from typing import Dict, Any, List, Set
@@ -22,7 +19,7 @@ from typing import Dict, Any, List, Set
 class InformationDiffusion_Simulator: 
   
   def __init__( self, graph: DynamicGraph, root: int ) -> None:
-    self.graph = graph
+    self.graph = [ graph ]
     self.root = root
   
   def simulate ( self, diffusion_functions: Dict[ int, Base_DiffusionFunction ], step: int = 10 ) -> Dict[ str, Any ] : 
