@@ -1,7 +1,8 @@
 import streamlit as st 
 
 from src.utils import (
-  generate_vertex
+  generate_vertex,
+  convert_vertex_list_to_dataframe
 )
 
 from src.info2json import (
@@ -22,16 +23,17 @@ btn_load = st.button ( label='Show vertex' )
 
 is_new_vertex: bool = False
 
-tokens = None
+vertex = None
 
 if btn_create:
   st.write ( 'generando vertices' )
-  tokens = generate_vertex ( name_metadatas=load_name_metadatas( ), N=N )
+  vertex = generate_vertex ( name_metadatas=load_name_metadatas( ), N=N )
   is_new_vertex = True
 
 if btn_load or is_new_vertex: 
-  if tokens == None:
-    tokens = load_vertex ( )
+  if vertex == None:
+    vertex = load_vertex ( )
   st.write ( 'mostrando vertices' )
-  st.write ( tokens )
+  st.write ( convert_vertex_list_to_dataframe ( vertex=vertex ) )
 
+# TODO: Analisis Estadistico del Dataframe

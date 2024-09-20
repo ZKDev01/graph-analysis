@@ -20,7 +20,6 @@ logo = 'resources/design_01.png'
 
 def main ( ) -> None:
   st.title ( "Main Page" )
-  st.sidebar.success ( 'Select a page above.' )
 
   with st.expander('**About**'):
     st.write ( markdown )

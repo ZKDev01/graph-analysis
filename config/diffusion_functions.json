@@ -1,3 +1,11 @@
 {
-  
+  "dict-diffusion-functions" : {
+    "1" : {
+      "type" : "always"
+    },
+    "2" : {
+      "type" : "probabilistic",
+      "p" : 0.6
+    }
+  }
 }

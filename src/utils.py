@@ -1,4 +1,4 @@
-
+from pandas import DataFrame
 from typing import Dict, List, Set, Any
 
 from src.graph import (
@@ -24,3 +24,16 @@ def generate_vertex ( name_metadatas: List[ str ], N: int = 100 ) -> List[ Verte
   return v
 
 
+
+def convert_vertex_list_to_dataframe ( vertex: List[ Vertex ] ) -> DataFrame:
+  data = [ ]
+  for v in vertex:
+    row = {'Name': v.name, 'Type': v.type}
+    metadatas_dict = {}
+    for meta in v.metadatas:
+      metadatas_dict[meta.name] = meta.value
+    row.update(metadatas_dict)
+    data.append(row)
+
+  df = DataFrame ( data )
+  return df
