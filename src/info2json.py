@@ -60,9 +60,14 @@ def load_vertex ( verbose: bool = False ) -> List[ Vertex ]:
 
 
 
-# FALTA
 def load_name_metadatas ( ) -> List[ str ] : 
-  return [ 'like-movies', 'like-music' ]
+
+  metadatas = [ ]
+  with open ( TOKENS_METADATAS, 'r' ) as file:
+    json_data: Dict = json.load ( file )
+    metadatas = json_data.keys ( )
+
+  return metadatas
 
 
 

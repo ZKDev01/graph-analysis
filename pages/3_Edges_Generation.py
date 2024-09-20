@@ -30,4 +30,4 @@ if btn_model and select == 'Erdos-Renyi Model':
 
 # TODO: salvar las aristas
 # TODO: load las aristas
-# TODO: mostrar las aristas
+# TODO: mostrar las aristas like a adj_matrix

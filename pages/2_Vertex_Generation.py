@@ -1,5 +1,7 @@
 import streamlit as st 
 
+from scipy.stats import pearsonr
+
 from src.utils import (
   generate_vertex,
   convert_vertex_list_to_dataframe
@@ -18,22 +20,47 @@ N = st.number_input (
   max_value=200,
   step=1 )
 
-btn_create = st.button ( label='Create vertex' )
-btn_load = st.button ( label='Show vertex' )
+metadatas = load_name_metadatas ( )
+options = st.multiselect ( 'Select Metadatas', metadatas )
+
+btn_create = st.button ( label='Create Vertex' )
+btn_load = st.button ( label='Show Vertex' )
 
 is_new_vertex: bool = False
 
 vertex = None
 
-if btn_create:
-  st.write ( 'generando vertices' )
-  vertex = generate_vertex ( name_metadatas=load_name_metadatas( ), N=N )
+if btn_create and not ( len ( options ) == 0 ):
+  st.write ( 'Generate Vertexs ...' )
+  vertex = generate_vertex ( name_metadatas=options, N=N )
   is_new_vertex = True
 
 if btn_load or is_new_vertex: 
   if vertex == None:
     vertex = load_vertex ( )
-  st.write ( 'mostrando vertices' )
-  st.write ( convert_vertex_list_to_dataframe ( vertex=vertex ) )
+  
+  st.write ( '# Vertexs Like a Dataframe' )
+  df = convert_vertex_list_to_dataframe ( vertex=vertex )
 
-# TODO: Analisis Estadistico del Dataframe
+  if len ( options ) == 0:
+    columns = df.columns
+    options = list ( zip( metadatas, columns ) )
+
+  st.write ( df )
+
+  st.write ( '## Analisis Estadistico de los vertices' )
+  
+  st.write ( '### Analisis de frecuencia de metadatos' )
+  
+  frequency_dict = { }
+  for opt in options:
+    frequency_dict[ opt ] = df[ opt ].explode().value_counts()
+  st.write ( frequency_dict )
+  # pretty print < frequency-dict >
+  
+  st.write ( '### Analisis de clustering basado en preferencias' )
+  # ...
+
+  st.write ( '### Analisis de correlacion entre peliculas y generos' )
+  # correlacion de pearson  
+  
