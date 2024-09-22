@@ -1,3 +1,5 @@
+import numpy as np
+
 from pandas import DataFrame
 from typing import Dict, List, Set, Any
 
@@ -37,3 +39,16 @@ def convert_vertex_list_to_dataframe ( vertex: List[ Vertex ] ) -> DataFrame:
 
   df = DataFrame ( data )
   return df
+
+
+def convert_adj_list_to_d2array ( adj_list: Dict[ int, List[ int ] ] ) -> np.matrix:
+
+  max_size = max ( adj_list.keys( ) ) + 1
+  matrix = [ [0 for _ in range( max_size )] for _ in range ( max_size ) ]
+
+  for i, neighbors in adj_list.items ( ):
+    for j in neighbors:
+      matrix[i][j] = 1
+  
+  return np.matrix ( matrix )
+

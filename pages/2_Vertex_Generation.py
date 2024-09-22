@@ -44,7 +44,7 @@ if btn_load or is_new_vertex:
 
   if len ( options ) == 0:
     columns = df.columns
-    options = list ( zip( metadatas, columns ) )
+    options = [ m for m in metadatas if m in columns ]
 
   st.write ( df )
 
@@ -55,7 +55,8 @@ if btn_load or is_new_vertex:
   frequency_dict = { }
   for opt in options:
     frequency_dict[ opt ] = df[ opt ].explode().value_counts()
-  st.write ( frequency_dict )
+  for key, frequency_serie in frequency_dict.items ( ):
+    st.write ( frequency_serie )
   # pretty print < frequency-dict >
   
   st.write ( '### Analisis de clustering basado en preferencias' )

@@ -106,6 +106,10 @@ class DynamicGraph:
     """
     return output
 
+  def set_adj_list ( self, adj_list: Dict[ int, List[int] ] ) -> None:
+    assert len ( adj_list.keys() ) == len ( self.adj_list.keys() )
+    self.adj_list = adj_list
+    
 """ 
 
 

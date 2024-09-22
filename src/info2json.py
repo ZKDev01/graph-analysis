@@ -9,7 +9,7 @@ from src.graph import (
 
 # PATH
 CONFIG_VERTEX       = 'config/vertex.json'
-CONFIG_GRAPH_PARAMS = 'config/graph_params.json'
+CONFIG_EDGES        = 'config/edges.json'
 CONFIG_F_DIFFUSION  = 'config/diffusion_functions.json'
 CONFIG_SIMULATION   = 'config/simulation.json'
 
@@ -83,5 +83,44 @@ def load_tokens ( metadatas: List [ str ], verbose: bool = False ) -> Dict[ str,
     print ( dict_tokens )
 
   return dict_tokens
+
+
+
+def save_edges ( adj_list: Dict[ int, List[ int ] ], verbose: bool = False ) -> None:
+  
+  if not isinstance ( verbose, bool ):
+    raise TypeError ( "[verbose] is not bool type" )
+
+  tmp = { }
+  for key, value in adj_list.items ( ):
+    tmp [ key ] = value
+  dict_json = { 'edges' : tmp }
+  result = json.dumps ( dict_json )
+  with open ( CONFIG_EDGES, 'w' ) as file:
+    file.write ( result )
+
+  if verbose: 
+    print ( dict_json )
+  
+
+
+def load_edges ( verbose: bool = False ) -> Dict [ int, List[int] ]:
+
+  if not isinstance ( verbose, bool ):
+    raise TypeError ( "[verbose] is not bool type" )
+  
+  # read file from json
+  with open ( CONFIG_EDGES, 'r' ) as file:
+    result = json.load ( file )
+
+  # transform the dict to adj-list
+  adj_list : Dict[ int, List[ int ] ] = { }
+  for key, value in result [ 'edges' ].items() : 
+    adj_list[ int(key) ] = value
+    
+  if verbose:
+    print ( adj_list )
+
+  return adj_list
 
 
