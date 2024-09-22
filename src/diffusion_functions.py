@@ -49,6 +49,15 @@ class Metadata_DiffusionFunction ( Base_DiffusionFunction ) :
 
 
 
+def interpeter ( key: str, graph: DynamicGraph, i: int, params_f_diffusion: Dict ) -> Base_DiffusionFunction:
+  if key == 'Base':
+    f = Base_DiffusionFunction ( graph=graph, i=i )
+    return f
+  if key == 'P':
+    f = Probabilistic_DiffusionFunction ( graph=graph, i=i, p=params_f_diffusion['p'] )
+    return f
+  raise Exception ( 'Error' )
+
 """ 
 
 class Probabilistic_DiffusionFunction ( Base_DiffusionFunction ):
