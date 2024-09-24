@@ -31,7 +31,6 @@ is_new_vertex: bool = False
 vertex = None
 
 if btn_create and not ( len ( options ) == 0 ):
-  st.write ( 'Generate Vertexs ...' )
   vertex = generate_vertex ( name_metadatas=options, N=N )
   is_new_vertex = True
 

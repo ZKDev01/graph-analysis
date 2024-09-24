@@ -19,7 +19,7 @@ CONFIG_EDGES        = 'config/edges.json'
 CONFIG_F_DIFFUSION  = 'config/diffusion_functions.json'
 CONFIG_SIMULATION   = 'config/simulation.json'
 
-TOKENS_METADATAS    = 'metadata/tokens.json'
+TOKENS_METADATAS    = 'config/tokens.json'
 
 
 

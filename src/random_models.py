@@ -22,16 +22,18 @@ def model_ER ( graph: DynamicGraph, p: float ) -> DynamicGraph:
   
   return graph
 
-def model_WS ( graph: DynamicGraph ) -> DynamicGraph:
+
+
+def model_WS ( graph: DynamicGraph, avg_degree: int, rewiring_prob: float ) -> DynamicGraph:
   """
   Model: Watts-Strogatz
 
   El modelo parte de un grafo con $N$ nodos donde estos nodos se conectan a sus dos vecinos más cercanos describiendo una forma de anillo. 
   Esta red en forma de anillo tiene un coeficiente de clustering alto, pero también el diámetro del grafo lo es. 
   """
-  
-
   return graph
+
+
 
 def model_BA ( graph: DynamicGraph ) -> DynamicGraph:
   """ 
@@ -42,7 +44,6 @@ def model_BA ( graph: DynamicGraph ) -> DynamicGraph:
   Este sistema se conoce como conexión preferencial (preferential attachments) y 
   se puede explicar con la paradoja de "the rich get richer"
   """
-  
   return graph
 
 

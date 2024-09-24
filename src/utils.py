@@ -52,3 +52,12 @@ def convert_adj_list_to_d2array ( adj_list: Dict[ int, List[ int ] ] ) -> np.mat
   
   return np.matrix ( matrix )
 
+
+
+def convert_edges_from_dynamic_graph ( adj_list: Dict[ int, List[int] ] ) -> List:
+  output: List = [ ]
+  for i, list_i in adj_list.items ( ):
+    for j in list_i:
+      if not (j,i) in output:
+        output.append ( (i,j) )
+  return output

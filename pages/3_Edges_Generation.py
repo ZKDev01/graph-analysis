@@ -11,7 +11,9 @@ from src.graph import (
   DynamicGraph
 )
 from src.random_models import (
-  model_ER
+  model_ER,
+  model_WS,
+  model_BA
 )
 from src.info2json import (
   load_vertex,
@@ -22,37 +24,33 @@ from src.utils import (
   convert_adj_list_to_d2array 
 )
 
-
-
-def show_heatmap ( matrix: np.matrix ) -> None:
-  fig, ax = plt.subplots ( figsize = (10,8) )
-  heatmap = sns.heatmap ( matrix, annot=True, cmap="YlGnBu", fmt='.0f',
-    xticklabels= [ f"Vertex { i }" for i in range ( len(matrix) ) ],
-    yticklabels= [ f"Vertex { i }" for i in range ( len(matrix) ) ]
-    )
-  plt.title( 'Matrix de Adyacencia' )
-  plt.xlabel ( 'Vertex' )
-  plt.ylabel ( 'Vertex' )
-  plt.tight_layout ( )
-  st.pyplot ( fig=fig )
-
-
-
-models = [ 'Erdos-Renyi Model' ]
+# Config params
+models = [ 'Erdos-Renyi Model', 'Watts-Strogatz Model', 'Barabasi-Albert Model' ]
 select = st.selectbox ( label='Select a model', options=models )
 
+p = st.number_input ( 'Model Erdos-Renyi => P', min_value=0.0, max_value=1.0, value=0.5 )
+
+# Buttons
 btn_model = st.button ( 'Generate Edges' )
 btn_load_edges = st.button ( 'Load Edges' )
 
+# Generate Edges
+vertex = load_vertex ( )
+graph = DynamicGraph ( vertex=vertex )
+
 if btn_model and select == 'Erdos-Renyi Model': 
-  vertex = load_vertex ( )
-  graph = DynamicGraph ( vertex=vertex )
-  graph = model_ER ( graph=graph, p = 0.5 )
-  
+  graph = model_ER ( graph=graph, p = p )
   save_edges ( graph.adj_list )
-  # adj_matrix = convert_adj_list_to_d2array ( graph.adj_list )
   st.write ( graph.adj_list )
 
+if btn_model and select == 'Watts-Strogatz Model':
+  st.write ( 'falta' )
+
+if btn_model and select == 'Barabasi-Albert Model':
+  st.write ( 'falta' )
+
+
+# Load Edges from JSON
 if btn_load_edges:
   adj_list = load_edges ( )
   st.write ( adj_list )
