@@ -19,7 +19,8 @@ class Base_DiffusionFunction :
   
   # poder transformar una funcion a texto, para luego tomarla de los JSON
   def __repr__(self) -> str:
-    pass 
+    return f"This diffusion function always returns true for every vertex, adj to {self.i}"
+
 
 
 
@@ -49,6 +50,8 @@ class Metadata_DiffusionFunction ( Base_DiffusionFunction ) :
 
 
 
+
+
 def interpeter ( key: str, graph: DynamicGraph, i: int, params_f_diffusion: Dict ) -> Base_DiffusionFunction:
   if key == 'Base':
     f = Base_DiffusionFunction ( graph=graph, i=i )
@@ -57,6 +60,13 @@ def interpeter ( key: str, graph: DynamicGraph, i: int, params_f_diffusion: Dict
     f = Probabilistic_DiffusionFunction ( graph=graph, i=i, p=params_f_diffusion['p'] )
     return f
   raise Exception ( 'Error' )
+
+def generate_diffusion_function ( graph: DynamicGraph, name_function: str = 'Base' ) -> Dict[ int, Base_DiffusionFunction ]:
+  # name_function = 'Base'
+  output: Dict[ int, Base_DiffusionFunction ] = { }
+  for i, _ in graph.vertex.items ( ):
+    output[ i ] = Base_DiffusionFunction ( graph, i )
+  return output
 
 """ 
 

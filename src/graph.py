@@ -76,7 +76,7 @@ class Vertex:
 
 class DynamicGraph:
   def __init__ ( self, vertex: List [ Vertex ] ) -> None:
-    self.vertex = { }
+    self.vertex : Dict[ int, Vertex ] = { }
     for i, v in enumerate ( vertex ):
       self.vertex [ i ] = Vertex.copy( v )
     

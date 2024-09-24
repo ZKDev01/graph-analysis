@@ -1,7 +1,9 @@
 {
-  "temporal-graph" : {
-    "0" : "estado del grafo en tiempo 0",
-    "1" : "estado del grafo en tiempo 1",
-    "2" : "estado del grafo en tiempo 2"
+  "log" : {
+    "0" : [ 0,1,2,3 ],
+    "1" : [ 4,5,6,7 ],
+    "2" : [ 8,9 ],
+    "3" : [ ],
+    "4" : [ ]
   }
 }
