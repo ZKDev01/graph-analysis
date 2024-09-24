@@ -4,8 +4,14 @@ from typing import Dict, List, Any, Set
 
 from src.graph import (
   Metadata,
-  Vertex
+  Vertex,
+  DynamicGraph
 )
+from src.diffusion_functions import (
+  interpeter, 
+  Base_DiffusionFunction
+)
+
 
 # PATH
 CONFIG_VERTEX       = 'config/vertex.json'
@@ -124,3 +130,33 @@ def load_edges ( verbose: bool = False ) -> Dict [ int, List[int] ]:
   return adj_list
 
 
+def save_diffusion_functions ( input: Dict[ int, Base_DiffusionFunction ], verbose: bool = False ) -> None:
+  
+  tmp = { }
+  for key, value in input.items ( ):
+    tmp [ key ] = value.get_dict_for_json ( )
+  dict_json = { 'dict-diffusion-functions' : tmp }
+  
+  result = json.dumps ( dict_json )
+  with open ( CONFIG_F_DIFFUSION, 'w' ) as file:
+    file.write ( result )
+
+  if verbose:
+    print ( result )
+
+
+def load_diffusion_functions ( graph: DynamicGraph,  verbose: bool = False ) -> Dict [ int, Base_DiffusionFunction ]:
+  
+  with open ( CONFIG_F_DIFFUSION, 'r' ) as file:
+    result = json.load ( file )
+  
+  # transform 
+  output: Dict[ int, Base_DiffusionFunction ] = { }
+  for key, value in result[ 'dict-diffusion-functions' ].items ( ):
+    output[ int(key) ] = interpeter( key=value['type'], graph=graph , i=int(key), params_f_diffusion=value )
+
+  if verbose: 
+    print ( result )
+    print ( output )
+  
+  return output

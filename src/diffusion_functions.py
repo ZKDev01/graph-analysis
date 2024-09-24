@@ -14,13 +14,16 @@ class Base_DiffusionFunction :
     self.graph = graph
     self.i = i 
   
-  def diffusion ( self, j: int ) -> None:
+  def diffusion ( self, j: int ) -> bool:
     return True
   
-  # poder transformar una funcion a texto, para luego tomarla de los JSON
   def __repr__(self) -> str:
     return f"This diffusion function always returns true for every vertex, adj to {self.i}"
 
+  def get_dict_for_json ( self ) -> Dict:
+    return {
+      'type' : 'base'
+    }
 
 
 
@@ -30,11 +33,17 @@ class Probabilistic_DiffusionFunction ( Base_DiffusionFunction ) :
     super().__init__(graph, i)
     self.p = p
 
-  def diffusion(self, j: int) -> None:
+  def diffusion(self, j: int) -> bool:
     return random.random ( ) < self.p
   
   def __repr__(self) -> str:
-    pass
+    return f"This diffusion function return true with a probabilistic {self.p}"
+
+  def get_dict_for_json ( self ) -> Dict:
+    return {
+      'type' : 'probabilistic',
+      'p' : self.p
+    }
 
 
 
@@ -53,20 +62,14 @@ class Metadata_DiffusionFunction ( Base_DiffusionFunction ) :
 
 
 def interpeter ( key: str, graph: DynamicGraph, i: int, params_f_diffusion: Dict ) -> Base_DiffusionFunction:
-  if key == 'Base':
+  if key == 'base':
     f = Base_DiffusionFunction ( graph=graph, i=i )
     return f
-  if key == 'P':
+  if key == 'probabilistic':
     f = Probabilistic_DiffusionFunction ( graph=graph, i=i, p=params_f_diffusion['p'] )
     return f
   raise Exception ( 'Error' )
 
-def generate_diffusion_function ( graph: DynamicGraph, name_function: str = 'Base' ) -> Dict[ int, Base_DiffusionFunction ]:
-  # name_function = 'Base'
-  output: Dict[ int, Base_DiffusionFunction ] = { }
-  for i, _ in graph.vertex.items ( ):
-    output[ i ] = Base_DiffusionFunction ( graph, i )
-  return output
 
 """ 
 

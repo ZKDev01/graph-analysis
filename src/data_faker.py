@@ -3,9 +3,12 @@ from typing import Dict, List, Set
 
 from src.graph import (  
   Metadata,
-  Vertex
+  Vertex,
+  DynamicGraph
 )
-
+from src.diffusion_functions import (
+  Base_DiffusionFunction
+)
 
 
 # OK
@@ -56,3 +59,14 @@ def generate_N_vertex_with_unique_name ( N: int, dict_tokens: Dict[ str, Set[ st
   return vertex
 
 
+
+def generate_diffusion_function ( graph: DynamicGraph, name_function: str = 'Base' ) -> Dict[ int, Base_DiffusionFunction ]:
+  
+  # aqui usamos faker para generar la probabilidad p 
+  fake = Faker ( )
+
+  # name_function = 'Base'
+  output: Dict[ int, Base_DiffusionFunction ] = { }
+  for i, _ in graph.vertex.items ( ):
+    output[ i ] = Base_DiffusionFunction ( graph, i )
+  return output
