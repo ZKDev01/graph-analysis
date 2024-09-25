@@ -1,32 +1,22 @@
 import streamlit as st 
-import altair as alt  
 
-st.set_page_config ( 
+st.set_page_config (
   page_title='Home',
   layout='wide',
   page_icon='🦮'
 )
 
-markdown = """ 
-This is a Data Science Project about Graph Analysis
+markdown = """
+Este es un proyecto para la asignatura **Análisis de Redes Complejas**
 
 GitHub Repository: <URL>
 """
 
-logo = 'resources/design_01.png'
-
-
-
-
 def main ( ) -> None:
-  st.title ( "Main Page" )
+  st.title ( 'Main Page' )
 
-  with st.expander('**About**'):
+  with st.expander ( "**About**" ):
     st.write ( markdown )
-    _, s, _ = st.columns ( (1, 2, 1) )
-    with s:
-      st.image ( logo )
-
 
 if __name__ == '__main__':
   main ( )
