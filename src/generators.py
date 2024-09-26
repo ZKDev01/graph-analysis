@@ -1,25 +1,34 @@
+import networkx as nx 
 from faker import Faker
-from typing import Dict, List, Set
+from typing import Dict, List, Set, Any
+from src.f_diffusion import Base_DiffusionFunction
 
-
-def generate_name ( N: int = 1, locale: str = 'en_US' ) -> List[ str ]:
+def generate_name ( N: int, locale: str = 'en_US' ) -> Dict[ int, str ]:
   """ 
   
   """
   fake = Faker ( locale=locale )
-  names: List[ str ] = [ fake.name() for _ in range ( N ) ]
+  names: Dict[ int, str ]= { i : fake.name() for i in range ( N ) }
   return names
 
-
-def generate_metadata ( tokens: Set[ str ], metadata_name: str, k: int = -1 ) -> None:
+def generate_metadata ( N: int, tokens: List[ str ] ) -> Dict[ int, List[ str ] ]:
   """ 
+  OK: falta docstring
+  """
+  fk = Faker( )
+  metadatas: Dict[ int, List[ str ] ] = { }
+  for i in range ( N ):
+    metadatas[ i ] = fk.random_elements ( 
+      elements=tokens,  
+      length=fk.random_int(min=0, max=len(tokens)),
+      unique=True
+    )
+  return metadatas
+
+def generate_f_diffusion ( G:nx.Graph ) -> Dict[ int,Base_DiffusionFunction ]:
+  """
   
   """
-  pass
-
-
-def generate_xd ( ) -> None:
-  """
-  
-  """
-  pass
+  N: int = len(G.nodes)
+  f_diffusion: Dict[ int,Base_DiffusionFunction ] = { i:Base_DiffusionFunction( G=G,i=i ) for i in range(N) }
+  return f_diffusion
