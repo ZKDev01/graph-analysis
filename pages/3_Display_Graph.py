@@ -10,7 +10,6 @@ G:nx.Graph = load_graph ()
 info:Dict = get_dict_info (G=G)
 
 dict_layouts:Dict[str,Any] = {
-  'random':       nx.random_layout(G),
   'spring':       nx.spring_layout(G),
   'circular':     nx.circular_layout(G),
   'kamada-kawai': nx.kamada_kawai_layout(G),

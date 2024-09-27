@@ -88,7 +88,3 @@ if btn_load or not (G == None):
   if G == None: G=load_graph()
   info = get_dict_info(G=G)
   st.write(info['neighbors'])
-  # TODO: mostrar la informacion del grafo, tambien, algunas informaciones previas que puede tener el proyecto, como analisis de clustering o como se distribuye los metadatos 
-  # TODO: tambien puede extenderse con un analisis de los grados de los vertices. en fin, algo de analisis de grafos
-  pass
-
