@@ -26,12 +26,10 @@ with col2:
     options=metadata_options 
   )  
 
-
 ## Modelo de Generacion Aleatoria de Aristas 
 param_model: Dict = { }
 
-with st.form('barabasi-albert model'):
-  # TODO: usar expander para mostrar que significa estos valores y en que consiste el modelo ba
+with st.form ('barabasi-albert model'):
   param_model[ 'm' ] = st.number_input (
     label='Selecciona el valor m para el modelo barabasi-albert',
     min_value=1
@@ -39,9 +37,10 @@ with st.form('barabasi-albert model'):
   btn_model_ba = st.form_submit_button(
     label='Generar grafo con el modelo barabasi-albert'
   )
+  with st.expander (label='Info'):
+    st.write ('El modelo barabasi-albert funciona ...')
 
 with st.form ('watts-strogatz model'):
-  # TODO: usar expander para mostrar que significa estos valores y en que consiste el modelo ws
   param_model[ 'k' ] = st.number_input (
     label='Selecciona el valor k para el modelo watts-strogatz',
     min_value=1 
@@ -54,6 +53,8 @@ with st.form ('watts-strogatz model'):
   btn_model_ws = st.form_submit_button(
     label='Generar grafo con el modelo watts-strogatz'
   )
+  with st.expander (label='Info'):
+    st.write ('El modelo watts-strogatz funciona ...')
 
 # Buttons
 btn_load = st.button (
@@ -84,7 +85,6 @@ if btn_model_ba or btn_model_ws:
   save_graph(G=G)
 
 if btn_load or not (G == None):
-  st.write ('## Mostrando informacion del grafo')
   if G == None: G=load_graph()
   info = get_dict_info(G=G)
-  st.write(info['neighbors'])
+  st.write (info)

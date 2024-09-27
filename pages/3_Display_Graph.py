@@ -1,10 +1,8 @@
 import networkx as nx 
 import streamlit as st
 import matplotlib.pyplot as plt 
-from typing import Dict, List, Any 
+from typing import Dict, Any 
 from src.info2json import load_graph, get_dict_info
-
-# TODO: Implement Analysis-Graph like Clustering, Color, ..., Also, New-Graph for Metadata Link or Union (Clustering?)
 
 G:nx.Graph = load_graph ()
 info:Dict = get_dict_info (G=G)
