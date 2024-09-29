@@ -18,5 +18,8 @@ def main ( ) -> None:
   with st.expander ( "**About**" ):
     st.write ( markdown )
 
+  # TODO: mostrar un poco la introduccion del proyecto 
+
+
 if __name__ == '__main__':
   main ( )
