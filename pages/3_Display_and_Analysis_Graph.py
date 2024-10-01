@@ -1,14 +1,15 @@
 import pandas as pd
+import altair as alt
 import networkx as nx 
 import streamlit as st
 import matplotlib.pyplot as plt 
-from typing import Dict, Any
+from typing import Dict, Any, List
+from sklearn.cluster import KMeans
 from src.info2json import load_graph, get_dict_info, load_tokens
 from src.utils import (
   convert_graph_info_to_dataframe,
   info_of_metadata_to_dataframe,
-  get_metadatas,
-  pagerank
+  get_metadatas
 )
 
 #* Page-Configuration
@@ -112,7 +113,7 @@ centrality = {
   'closeness'   : nx.closeness_centrality (G=G),
   'betweenness' : nx.betweenness_centrality (G=G),
   'degree'      : nx.degree_centrality (G=G),
-  'eigenvector' : nx.eigenvector_centrality (G=G)
+  #'eigenvector' : nx.eigenvector_centrality (G=G)
 }
 
 st.markdown (f"""
@@ -125,31 +126,21 @@ st.markdown (f"""
 **Periferia**: {periphery}
 
 **Grado medio**: {ave_degree:.2f}
-
-**Valor promedio de clustering**: {ave_clustering:.2f}
-
 """)
 
-col4_1, col4_2, col4_3, col4_4 = st.columns ([1,1,1,1])
+col4_1, col4_2, col4_3 = st.columns ([1,1,1])
 with col4_1:
   st.write ('**Closeness Centrality**')
-  for n, v in sorted( centrality['closeness'].items(), key=lambda x : x[1], reverse=True ):
+  for n, v in sorted( centrality['closeness'].items(), key=lambda x : x[1], reverse=True )[:5]:
     st.write (f"- Node {n}: {v:.2f}")
 with col4_2:
   st.write ('**Betweenness Centrality**')
-  for n, v in sorted( centrality['betweenness'].items(), key=lambda x : x[1], reverse=True ):
+  for n, v in sorted( centrality['betweenness'].items(), key=lambda x : x[1], reverse=True )[:5]:
     st.write (f"- Node {n}: {v:.2f}")
 with col4_3:
   st.write ('**Degree Centrality**')
-  for n, v in sorted( centrality['degree'].items(), key=lambda x : x[1], reverse=True ):
+  for n, v in sorted( centrality['degree'].items(), key=lambda x : x[1], reverse=True )[:5]:
     st.write (f"- Node {n}: {v:.2f}")
-with col4_4:
-  st.write ('**Eigenvector Centrality**')
-  for n, v in sorted( centrality['eigenvector'].items(), key=lambda x : x[1], reverse=True ):
-    st.write (f"- Node {n}: {v:.2f}")
-
-st.write ('PakeRank')
-# TODO: Falta PageRank
 
 with st.expander ('Información sobre las características del grafo'):
   st.markdown("""
@@ -171,14 +162,15 @@ with st.expander ('Información sobre las características del grafo'):
   **Grado medio**: 
     Número de vecinos (conexiones a otros nodos) medio que tiene un grado. 
 
+  **Periferia**: 
+    Se refiere a los nodos que están más alejados del centro del grafo, generalmente con pocos o ningún vecino. 
+
   **Centralidad**: 
     Permite realizar un análisis para indicar aquellos nodos que poseen una mayor cantidad
     de relaciones y por ende, los influyentes dentro del grupo. 
-
-  **Valor promedio de clustering**: 
-    Es una métrica que permite medir la propensión de los nodos a agruparse en subgrafos densos 
-    dentro del grafo general. En otras palabras, indica cuánto se parecen los vecinos cercanos 
-    entre sí
+  - *Closeness Centrality*: mide la facilidad con la que un nodo puede acceder a todos los demás nodos en la red
+  - *Betweenness Centrality*: mide qué tan frecuentemente un nodo aparece en los caminos más cortos entre otros nodos en la red
+  - *Degree Centrality*: mide el número de conexiones (aristas) que tiene un nodo en una red
   """)
 
 if len(metadata) > 1:
@@ -215,10 +207,14 @@ if len(metadata) > 1:
   for m in metadata:
     st.write (f'**Conteo para el metadato**: {m.upper()}')
     col3_1, col3_2 = st.columns( [1,2] )
+    tmp = dict_df_counter_ind[m].sort_values ('count',ascending=False)
     with col3_1:
-      st.write (dict_df_counter_ind[m])
+      st.write (tmp)
     with col3_2:
-      # TODO: Mejorar lo siguiente 
-      st.write (f'**Mayor valor**: {dict_df_counter_ind[m].max()}')
-      st.write (f'**Menor valor**: {dict_df_counter_ind[m].min()}')
-      # TODO: usar matplotlib para graficar este dataframe
+      st.bar_chart (
+        tmp , 
+        x=m, 
+        y='count', 
+        color='#0000FF'
+      )
+

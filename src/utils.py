@@ -30,9 +30,9 @@ def info_of_metadata_to_dataframe (df: pd.DataFrame, metadata_name: List) -> pd.
       new_df[item] = df.apply (lambda row: 1 if item in row[name] else 0, axis=1)
   return new_df
 
-
-def pagerank(G, alpha=0.85, max_iter=100, tol=1.0e-8):
-  n = G.number_of_nodes()
+# FAIL
+def pagerank(G:nx.Graph, alpha=0.85, max_iter=100, tol=1.0e-8):
+  n = G.nodes()
   dangling = set(node for node in G.nodes() if G.degree(node) == 0)
   damping_factor = alpha
   teleportation_probability = (1 - damping_factor) / n

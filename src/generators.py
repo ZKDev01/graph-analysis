@@ -1,7 +1,11 @@
+import random
 import networkx as nx 
 from faker import Faker
 from typing import Dict, List, Set, Any
-from src.f_diffusion import Base_DiffusionFunction
+from src.f_diffusion import (
+  Base_DiffusionFunction,
+  Probabilistic_DiffusionFunction,
+)
 
 def generate_name ( N: int, locale: str = 'en_US' ) -> Dict[ int, str ]:
   """ 
@@ -32,3 +36,7 @@ def generate_f_diffusion ( G:nx.Graph ) -> Dict[ int,Base_DiffusionFunction ]:
   N: int = len(G.nodes)
   f_diffusion: Dict[ int,Base_DiffusionFunction ] = { i:Base_DiffusionFunction( G=G,i=i ) for i in range(N) }
   return f_diffusion
+
+def generate_int ( N:int, M:int ) -> List[int]:
+  return [ random.randint(0,M) for _ in range(N) ]
+

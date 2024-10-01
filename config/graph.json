@@ -1,1 +1,258 @@
-{"nodes": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], "edges": [[0, 1], [0, 2], [0, 3], [0, 4], [1, 6], [2, 3], [2, 4], [2, 5], [2, 7], [2, 8], [2, 9], [3, 5], [3, 6], [6, 7], [7, 8], [7, 9]], "nodes-metadata": [[0, {"name": "Henry Faulkner", "like-genre-music": ["hip-hop", "classic", "latin", "blues", "punk", "gospel"], "like-genre-movies": ["horror", "action", "comedy", "fantasy"]}], [1, {"name": "Mark Williamson", "like-genre-music": ["gospel", "latin", "folk", "house", "pop", "rock", "blues", "electronic", "soul", "indie", "classic", "punk", "country", "reggae", "metal", "hip-hop", "jazz", "techno"], "like-genre-movies": ["fantasy"]}], [2, {"name": "Gabriel Rowe", "like-genre-music": ["electronic", "punk"], "like-genre-movies": ["animation", "action", "fantasy", "horror"]}], [3, {"name": "Michelle Bailey", "like-genre-music": ["electronic", "soul", "indie", "rock", "gospel", "pop", "reggae", "country", "metal", "jazz", "classic", "house", "folk", "blues", "techno", "hip-hop", "latin"], "like-genre-movies": ["action", "fantasy", "comedy"]}], [4, {"name": "Natalie Miller", "like-genre-music": ["punk", "metal", "jazz", "blues", "pop", "house", "folk", "gospel", "latin", "hip-hop", "rock", "electronic", "reggae", "soul", "country", "classic", "techno", "indie"], "like-genre-movies": ["horror", "comedy", "action", "fantasy"]}], [5, {"name": "Darlene Watkins", "like-genre-music": ["folk", "gospel", "soul", "reggae", "electronic", "indie", "pop", "techno", "country", "blues", "metal", "house", "rock", "jazz", "latin", "classic", "hip-hop", "punk"], "like-genre-movies": ["fantasy"]}], [6, {"name": "Mary Williams", "like-genre-music": ["pop", "metal", "jazz", "folk", "reggae", "house", "punk", "hip-hop"], "like-genre-movies": ["action", "comedy", "horror", "fantasy", "animation"]}], [7, {"name": "Katelyn Young", "like-genre-music": ["gospel", "reggae", "jazz", "country", "hip-hop", "classic", "rock", "folk", "electronic", "indie", "techno"], "like-genre-movies": ["animation", "fantasy", "action"]}], [8, {"name": "Jeffrey Sanchez", "like-genre-music": ["pop", "electronic", "reggae", "soul", "country", "blues", "punk", "latin", "rock", "techno", "indie", "classic"], "like-genre-movies": ["horror", "comedy", "animation", "fantasy"]}], [9, {"name": "Justin Tanner", "like-genre-music": ["classic", "gospel", "house", "country", "latin", "pop", "folk"], "like-genre-movies": ["fantasy"]}]], "edges-metadata": [[0, 1, {}], [0, 2, {}], [0, 3, {}], [0, 4, {}], [1, 6, {}], [2, 3, {}], [2, 4, {}], [2, 5, {}], [2, 7, {}], [2, 8, {}], [2, 9, {}], [3, 5, {}], [3, 6, {}], [6, 7, {}], [7, 8, {}], [7, 9, {}]], "neighbors": {"0": [1, 2, 3, 4], "1": [0, 6], "2": [0, 3, 4, 5, 7, 8, 9], "3": [0, 2, 5, 6], "4": [0, 2], "5": [2, 3], "6": [1, 3, 7], "7": [2, 6, 8, 9], "8": [2, 7], "9": [2, 7]}}
+{
+  "nodes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      5
+    ]
+  ],
+  "nodes-metadata": [
+    [
+      0,
+      {
+        "name": "Jessica Howard",
+        "like-genre-music": [
+          "rock",
+          "electronic",
+          "reggae",
+          "soul",
+          "punk",
+          "hip-hop",
+          "jazz",
+          "gospel",
+          "pop",
+          "country",
+          "techno",
+          "classic",
+          "indie",
+          "latin",
+          "metal"
+        ],
+        "like-genre-movies": [
+          "comedy",
+          "horror",
+          "action"
+        ]
+      }
+    ],
+    [
+      1,
+      {
+        "name": "Deborah Aguilar",
+        "like-genre-music": [
+          "classic",
+          "indie",
+          "latin",
+          "country",
+          "electronic",
+          "blues",
+          "rock",
+          "pop",
+          "jazz",
+          "reggae",
+          "techno",
+          "hip-hop",
+          "folk",
+          "metal",
+          "soul",
+          "house"
+        ],
+        "like-genre-movies": [
+          "animation",
+          "action",
+          "fantasy",
+          "comedy"
+        ]
+      }
+    ],
+    [
+      2,
+      {
+        "name": "Melanie Banks",
+        "like-genre-music": [
+          "metal",
+          "classic",
+          "blues",
+          "jazz",
+          "pop",
+          "folk",
+          "reggae",
+          "indie",
+          "house",
+          "electronic",
+          "gospel",
+          "country",
+          "rock",
+          "soul"
+        ],
+        "like-genre-movies": []
+      }
+    ],
+    [
+      3,
+      {
+        "name": "Dr. Joshua Phillips",
+        "like-genre-music": [
+          "rock",
+          "jazz",
+          "electronic",
+          "folk",
+          "gospel"
+        ],
+        "like-genre-movies": [
+          "fantasy",
+          "comedy",
+          "action",
+          "animation"
+        ]
+      }
+    ],
+    [
+      4,
+      {
+        "name": "Anne Livingston",
+        "like-genre-music": [
+          "techno",
+          "country",
+          "blues",
+          "metal",
+          "reggae",
+          "punk",
+          "rock",
+          "gospel",
+          "soul",
+          "jazz",
+          "latin",
+          "folk",
+          "pop"
+        ],
+        "like-genre-movies": []
+      }
+    ],
+    [
+      5,
+      {
+        "name": "Adam Clayton",
+        "like-genre-music": [
+          "indie",
+          "house",
+          "rock",
+          "gospel",
+          "blues",
+          "reggae"
+        ],
+        "like-genre-movies": [
+          "fantasy",
+          "horror"
+        ]
+      }
+    ]
+  ],
+  "edges-metadata": [
+    [
+      0,
+      1,
+      {}
+    ],
+    [
+      0,
+      2,
+      {}
+    ],
+    [
+      0,
+      4,
+      {}
+    ],
+    [
+      1,
+      3,
+      {}
+    ],
+    [
+      1,
+      4,
+      {}
+    ],
+    [
+      1,
+      5,
+      {}
+    ],
+    [
+      2,
+      3,
+      {}
+    ],
+    [
+      3,
+      5,
+      {}
+    ]
+  ],
+  "neighbors": {
+    "0": [
+      1,
+      2,
+      4
+    ],
+    "1": [
+      0,
+      3,
+      4,
+      5
+    ],
+    "2": [
+      0,
+      3
+    ],
+    "3": [
+      1,
+      2,
+      5
+    ],
+    "4": [
+      0,
+      1
+    ],
+    "5": [
+      1,
+      3
+    ]
+  }
+}
