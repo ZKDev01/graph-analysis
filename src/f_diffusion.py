@@ -2,8 +2,6 @@ import random
 import networkx as nx
 from typing import Dict, Any, Set, List
 
-from networkx import Graph
-
 
 class Base_DiffusionFunction:
 
@@ -22,6 +20,9 @@ class Base_DiffusionFunction:
     return {
       'type' : 'base'
     }
+  
+  def calification (self) -> bool:
+    return True
 
 class Probabilistic_DiffusionFunction (Base_DiffusionFunction):
   
@@ -43,27 +44,49 @@ class Probabilistic_DiffusionFunction (Base_DiffusionFunction):
       'type' : 'probabilistic',
       'p' : self.p
     }
+  
+  def calification(self) -> bool:
+    return self.p > 0.5
 
 class Population_DiffusionFunction (Base_DiffusionFunction):
   def __init__(self, G: nx.Graph) -> None:
     super().__init__(G)
   
-  def set_config(self, i: int, degree: int) -> None:
+  def set_config(self, i: int, degree: int, neighbors: Dict[int, List]) -> None:
     self.degree: int = degree
+    self.neighbors: Dict[int, List] = neighbors
     return super().set_config(i)
   
   def diffusion(self, j: int) -> bool:
-    return super().diffusion(j)
+    return len(self.neighbors[j]) >= self.degree
 
+  def __repr__(self) -> str:
+    return f'Diffusion depends on the degree of the neighboring node (degree-neighbor >= {self.degree})'
 
+  def get_dict_for_json(self) -> Dict:
+    return {
+      'type' : 'population',
+      'degree' : self.degree
+    }
+  
+  def calification(self) -> bool:
+    return self.degree < (len(self.G.nodes())//2)
 
-def interpeter ( key:str, G:nx.Graph, i:int, f_diffusion_params: Dict ) -> Base_DiffusionFunction:
+def interpeter ( key:str, G:nx.Graph, i:int, f_diffusion_params: Dict, info:Dict ) -> Base_DiffusionFunction:
+  
   if key == 'base':
     f = Base_DiffusionFunction( G=G )
     f.set_config( i=i )
     return f
+  
   if key == 'probabilistic':
     f = Probabilistic_DiffusionFunction( G=G )
     f.set_config ( i=i, p=f_diffusion_params['p'] )
     return f
-  raise Exception('Error')
+  
+  if key == 'population':
+    f = Population_DiffusionFunction( G=G )
+    f.set_config (i=i, degree=f_diffusion_params['degree'], neighbors=info['neighbors'] )
+    return f
+  
+  raise Exception(f'Error: TYPE: {key}')

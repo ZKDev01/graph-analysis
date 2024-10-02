@@ -1,7 +1,9 @@
+import pandas as pd
 import networkx as nx
 import streamlit as st
 from typing import Dict, List, Any, Set
-from src.info2json import load_graph, load_f_diffusion
+from src.utils import convert_graph_info_to_dataframe
+from src.info2json import load_graph, load_f_diffusion, get_dict_info
 from src.simulation import InformationDiffusion_Simulator
 from src.f_diffusion import Base_DiffusionFunction
 
@@ -18,8 +20,6 @@ mismo.
 
 **Métricas básicas**
 
-- *Tiempo promedio de propagación*: Calcula cuánto tiempo tardó 
-en propagarse desde el nodo inicial hasta todos los demás nodos
 - *Grado de conectividad*: Determina qué porcentaje de nodos 
 recibieron la información durante la simulación
 - *Velocidad de propagación*: Compara cómo cambia la velocidad 
@@ -50,16 +50,20 @@ necesario para que cada nodo reciba la información
 """
 
 G:nx.Graph = load_graph()
-f_diffusion:Dict[ int,Base_DiffusionFunction ] = load_f_diffusion( G=G )
+info:Dict = get_dict_info(G=G)
+df = convert_graph_info_to_dataframe(G=G)
+df = df[ ['name','degree'] ]
+N:int = len(G.nodes())
+f_diffusion:Dict[ int,Base_DiffusionFunction ] = load_f_diffusion( G=G, info=info )
 simulator = InformationDiffusion_Simulator( G=G )
-n_nodes = [ i for i in range(len(G.nodes())) ]
+n_nodes = [ i for i in range(N) ]
 
 st.title ("Simulación")
 
 with st.expander ('**About**'):
   st.markdown (markdown)
 
-n_step = st.number_input ('Seleccione la cantidad de pasos de simulación', min_value=1, max_value=10)
+n_step = st.number_input ('Seleccione la cantidad de pasos de simulación', min_value=1)
 roots = st.multiselect ('Selecciona los nodos iniciales para propagar la información', n_nodes)
 
 btn_start = st.button ('Simular')
@@ -70,5 +74,36 @@ if btn_start and len(roots) > 0:
     root=roots,
     STEP=n_step
   )
+  df_log = pd.DataFrame ( 
+    log
+  ).T 
+  st.write (df_log)
+  analized = [ value['analized'] for _,value in log.items() ]
+  analized_len = [ len(value) for value in analized ] 
+  not_analized = [ i for i in range(N) if i not in analized[-1] ]
 
-  st.write (log)
+  st.write ('Nodos en los cuales no llegó la información')
+  st.write ( not_analized )
+
+  # Metricas basicas
+  ## Grado de conectividad 
+  st.write ( f'**Grado de conectividad**: {analized_len[-1] / N}' )
+  
+  ## Velocidad de propagación
+  st.write ( '**Tiempo de propagación**' )
+  st.bar_chart ( analized_len )
+
+  # Analisis de Vulnerabilidad
+  ## Nodos con degree bajo
+  st.write ('Analizando los nodos con bajo grado')
+  df_sorted = df.sort_values('degree', ascending=True)
+  num_rows = int(len(df)*0.2)
+  st.write ( df_sorted.head(num_rows) )
+
+  ## Nodos con funcion de difusion 'complicada'
+  st.write ('Nodos complicados por su función de difusión son los siguientes:')
+  complicated:Dict[int,str] = {} 
+  for i,f in f_diffusion.items():
+    if not f.calification(): complicated[i] = f.__repr__()
+  st.write (complicated)
+

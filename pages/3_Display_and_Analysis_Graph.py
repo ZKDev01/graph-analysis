@@ -100,13 +100,15 @@ periphery = ''
 try:
   diameter = nx.diameter (G=G)
   periphery = nx.periphery (G=G)
+  ave_shortest_path = nx.average_shortest_path_length (G=G)
 except nx.NetworkXError:
   diameter = 'el grafo no es conexo. No se puede calcular el diámetro'
   periphery = 'el grafo no es conexo'
+  ave_shortest_path = 'el grafo no es conexo'
 
 ave_degree = sum(dict(G.degree()).values()) / len(G.nodes())
 ave_clustering = nx.average_clustering (G=G)
-ave_shortest_path = nx.average_shortest_path_length (G=G)
+
 ave_neighbors_degree = nx.average_neighbor_degree (G=G)
 
 centrality = {
@@ -119,7 +121,7 @@ centrality = {
 st.markdown (f"""
 **Densidad**: {density:.2f}
 
-**Camino característico**: {ave_shortest_path:.2f}
+**Camino característico**: {ave_shortest_path}
 
 **Diámetro**: {diameter}
 

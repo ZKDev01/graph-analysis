@@ -61,7 +61,7 @@ def save_f_diffusion ( f_diffusion: Dict[ int,Base_DiffusionFunction ], verbose:
   if verbose:
     print (result)
 
-def load_f_diffusion ( G:nx.Graph, verbose:bool = False ) -> Dict[ int,Base_DiffusionFunction ]:
+def load_f_diffusion ( G:nx.Graph, info: Dict, verbose:bool = False ) -> Dict[ int,Base_DiffusionFunction ]:
   result = None
   with open (CONFIG_F_DIFFUSION,'r') as file:
     result = json.load (file)
@@ -71,7 +71,8 @@ def load_f_diffusion ( G:nx.Graph, verbose:bool = False ) -> Dict[ int,Base_Diff
       key=value['type'],
       G=G,
       i=int(key),
-      f_diffusion_params=value) 
+      f_diffusion_params=value, 
+      info=info) 
     for key,value in result['f-diffusion'].items() }
   
   if verbose:
